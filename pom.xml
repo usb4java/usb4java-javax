@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>org.usb4java</groupId>
+  <artifactId>usb4java-javax</artifactId>
+  <packaging>jar</packaging>
+  <name>usb4java-javax</name>
+  <version>1.2.0-SNAPSHOT</version>
+  <url>http://usb4java.org/</url>
+  <description>
+    Extension for usb4java which implements javax.usb (JSR-80).
+  </description>
+  <inceptionYear>2011</inceptionYear>
+  <organization>
+    <name>usb4java Team</name>
+    <url>http://usb4java.org/</url>
+  </organization>
+  
+  <licenses>
+    <license>
+      <name>LGPL</name>
+      <url>LICENSE.md</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+    
+  <mailingLists>
+    <mailingList>
+      <name>Discussions</name>
+      <subscribe>usb4java+subscribe@googlegroups.com</subscribe>
+      <unsubscribe>usb4java+unsubscribe@googlegroups.com</unsubscribe>
+      <post>usb4java@googlegroups.com</post>
+      <archive>http://groups.google.com/group/usb4java</archive>
+    </mailingList>  
+  </mailingLists>    
+  
+  <developers>
+    <developer>
+      <id>kayahr</id>
+      <name>Klaus Reimer</name>
+      <email>k@ailis.de</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <url>http://www.ailis.de/~k/</url>
+    </developer>        
+    <developer>
+      <id>llongi</id>
+      <name>Luca Longinotti</name>
+      <email>l@longi.li</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <url>http://l.longi.li/</url>
+    </developer>        
+  </developers>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <repoBaseUrl>http://nexus.ailis.de/content/groups/public/de/ailis/${project.artifactId}/${project.artifactId}</repoBaseUrl>
+    <artifactBaseUrl>${repoBaseUrl}/${project.version}/${project.artifactId}-${project.version}</artifactBaseUrl>
+  </properties>
+  
+  <scm>
+    <connection>scm:git:git://github.com/usb4java/${project.artifactId}.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/usb4java/${project.artifactId}.git</developerConnection>
+    <url>http://github.com/usb4java/${project.artifactId}</url>
+  </scm>
+       
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/usb4java/${project.artifactId}/issues</url>
+  </issueManagement>
+  
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>https://ci.ailis.de/job/${project.artifactId}/</url>
+  </ciManagement>
+  
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <dependencyDetailEnabled>false</dependencyDetailEnabled>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>summary</report>
+              <report>project-team</report>
+              <report>mailing-list</report>
+              <report>issue-tracking</report>
+              <report>scm</report>
+              <report>cim</report>
+              <report>license</report>
+              <report>dependencies</report>
+              <report>plugins</report>
+              <report>plugin-management</report>
+            </reports>            
+          </reportSet>            
+        </reportSets>             
+      </plugin>
+      <plugin> 
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.9</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.9.1</version>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>javadoc</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins> 
+  </reporting> 
+  
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.16</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    
+    <plugins>
+    
+      <!-- Use Java 6 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+      
+      <!-- Build the web site -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId> 
+        <version>3.3</version>
+        <configuration>
+          <chmod>false</chmod>
+          <locales>en</locales>
+          <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+          <outputEncoding>${project.build.sourceEncoding}</outputEncoding>
+        </configuration>
+      </plugin>
+      
+    </plugins>
+  </build>  
+  
+  <repositories>
+    <repository>
+      <id>ailis</id>
+      <name>Ailis Maven Repository</name>
+      <url>http://nexus.ailis.de/content/groups/public/</url>
+    </repository>
+  </repositories>
+
+  <distributionManagement>
+    <site>
+      <id>project-website</id>
+      <url>file://${project.basedir}/../${project.artifactId}-site/</url>
+    </site>
+    <repository>
+      <id>ailis-releases</id>
+      <name>Ailis Maven Releases</name>
+      <url>http://nexus.ailis.de/content/repositories/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>ailis-snapshots</id>
+      <name>Ailis Maven Snapshots</name>
+      <url>http://nexus.ailis.de/content/repositories/snapshots</url>
+    </snapshotRepository>    
+
+  </distributionManagement>
+  
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency> 
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>1.9.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.usb4java</groupId>
+      <artifactId>libusb4java</artifactId>
+      <classifier>linux-x86_64</classifier>
+      <version>1.2.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency> 
+    <dependency>
+      <groupId>javax.usb</groupId>
+      <artifactId>usb-api</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.usb4java</groupId>
+      <artifactId>usb4java</artifactId>
+      <version>1.2.0-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  
+</project>

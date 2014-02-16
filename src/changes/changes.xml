@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<document xmlns="http://maven.apache.org/changes/1.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 
+                             http://maven.apache.org/plugins/maven-changes-plugin/xsd/changes-1.0.0.xsd">
+  <properties>
+    <title>Changelog</title>
+    <author email="k@ailis.de">Klaus Reimer</author>
+  </properties>
+  <body>    
+    <release version="1.2.0" date="2014-02-16" description="Major update">
+      <action dev="kayahr" type="update" date="2014-02-16">
+        Moved javax.usb implementation to org.usb4java.javax namespace
+        and separate usb4java-javax project. See changelog of the 
+        usb4java project for older changes.
+      </action>
+    </release>
+  </body>
+</document>
