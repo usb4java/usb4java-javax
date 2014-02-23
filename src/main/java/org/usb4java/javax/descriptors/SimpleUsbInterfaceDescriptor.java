@@ -88,7 +88,7 @@ public final class SimpleUsbInterfaceDescriptor extends SimpleUsbDescriptor
      * @param descriptor
      *            The descriptor from which to copy the data.
      */
-    public SimpleUsbInterfaceDescriptor(InterfaceDescriptor descriptor)
+    public SimpleUsbInterfaceDescriptor(final InterfaceDescriptor descriptor)
     {
         this(descriptor.bLength(),
             descriptor.bDescriptorType(),

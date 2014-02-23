@@ -69,7 +69,7 @@ public final class SimpleUsbEndpointDescriptor extends SimpleUsbDescriptor
      * @param descriptor
      *            The descriptor from which to copy the data.
      */
-    public SimpleUsbEndpointDescriptor(EndpointDescriptor descriptor)
+    public SimpleUsbEndpointDescriptor(final EndpointDescriptor descriptor)
     {
         this(descriptor.bLength(),
             descriptor.bDescriptorType(),

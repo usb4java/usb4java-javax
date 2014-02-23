@@ -120,7 +120,7 @@ public final class SimpleUsbDeviceDescriptor extends SimpleUsbDescriptor
      * @param descriptor
      *            The descriptor from which to copy the data.
      */
-    public SimpleUsbDeviceDescriptor(DeviceDescriptor descriptor)
+    public SimpleUsbDeviceDescriptor(final DeviceDescriptor descriptor)
     {
         this(descriptor.bLength(),
             descriptor.bDescriptorType(),

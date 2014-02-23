@@ -81,7 +81,7 @@ public final class SimpleUsbConfigurationDescriptor extends SimpleUsbDescriptor
      * @param descriptor
      *            The descriptor from which to copy the data.
      */
-    public SimpleUsbConfigurationDescriptor(ConfigDescriptor descriptor)
+    public SimpleUsbConfigurationDescriptor(final ConfigDescriptor descriptor)
     {
         this(descriptor.bLength(),
             descriptor.bDescriptorType(),
