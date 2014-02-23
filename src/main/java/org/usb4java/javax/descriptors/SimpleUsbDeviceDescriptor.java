@@ -9,8 +9,8 @@ import javax.usb.UsbDeviceDescriptor;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.usb4java.DescriptorUtils;
 import org.usb4java.DeviceDescriptor;
-import org.usb4java.utils.DescriptorUtils;
 
 /**
  * Simple USB device descriptor.
