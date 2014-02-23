@@ -198,9 +198,9 @@ public final class SimpleUsbConfigurationDescriptor extends SimpleUsbDescriptor
             descriptor.bConfigurationValue() & 0xff,
             descriptor.iConfiguration() & 0xff,
             String.format("0x%02x", descriptor.bmAttributes() & 0xff),
-            ((descriptor.bmAttributes() & 64) == 0) ? ("(Bus Powered)")
-                : ("Self Powered"),
-            ((descriptor.bmAttributes() & 32) == 0) ? ("")
+            ((descriptor.bmAttributes() & 64) == 0) ? "(Bus Powered)"
+                : "Self Powered",
+            ((descriptor.bmAttributes() & 32) == 0) ? ""
                 : String.format("    Remote Wakeup%n"),
             (descriptor.bMaxPower() & 0xff) * 2);
     }
