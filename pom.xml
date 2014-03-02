@@ -172,6 +172,33 @@
         </configuration>
       </plugin>
       
+      <!-- Build binary artifacts for Unix, Mac OS X and Windows -->
+      <plugin> 
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2.2</version>
+        <configuration>
+          <appendAssemblyId>false</appendAssemblyId>
+          <descriptors>
+            <descriptor>src/main/assembly/tarball.xml</descriptor>
+            <descriptor>src/main/assembly/zip.xml</descriptor>
+          </descriptors>
+          <!-- Workaround for issue MASSEMBLY-449 -->        
+          <archiverConfig>
+            <fileMode>420</fileMode> <!-- 420(dec) = 644(oct) -->
+            <directoryMode>493</directoryMode> <!-- 493(dec) = 755(oct) -->
+            <defaultDirectoryMode>493</defaultDirectoryMode>
+          </archiverConfig>
+        </configuration>
+        <executions>
+          <execution>
+            <id>package-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions> 
+      </plugin>
     </plugins>
   </build>  
   
