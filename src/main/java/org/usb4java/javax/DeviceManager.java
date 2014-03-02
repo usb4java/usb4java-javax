@@ -359,6 +359,7 @@ final class DeviceManager
             }
         });
         thread.setDaemon(true);
+        thread.setName("usb4java Device Scanner");
         thread.start();
     }
 

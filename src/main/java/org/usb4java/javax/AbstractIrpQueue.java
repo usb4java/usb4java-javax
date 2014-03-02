@@ -71,6 +71,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
                 }
             });
             this.processor.setDaemon(true);
+            this.processor.setName("usb4java IRP Queue Processor");
             this.processor.start();
         }
     }
