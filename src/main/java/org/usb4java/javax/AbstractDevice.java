@@ -11,6 +11,7 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -68,8 +69,8 @@ abstract class AbstractDevice implements UsbDevice
     /** The number of the currently active configuration. */
     private byte activeConfigurationNumber = 0;
 
-    /** The number of the currently claimed interface. */
-    private Byte claimedInterfaceNumber = null;
+    /** The numbers of the currently claimed interface. */
+    private HashSet<Byte> claimedInterfaceNumbers = new HashSet<Byte>();
 
     /** The port this device is connected to. */
     private UsbPort port;
@@ -371,7 +372,7 @@ abstract class AbstractDevice implements UsbDevice
     {
         if (number != this.activeConfigurationNumber)
         {
-            if (this.claimedInterfaceNumber != null)
+            if (!this.claimedInterfaceNumbers.isEmpty())
                 throw new UsbException("Can't change configuration while an "
                     + "interface is still claimed");
 
@@ -396,7 +397,7 @@ abstract class AbstractDevice implements UsbDevice
     final void claimInterface(final byte number, final boolean force)
         throws UsbException
     {
-        if (this.claimedInterfaceNumber != null)
+        if (this.claimedInterfaceNumbers.contains(number))
             throw new UsbClaimException("An interface is already claimed");
 
         final DeviceHandle handle = open();
@@ -422,7 +423,7 @@ abstract class AbstractDevice implements UsbDevice
         if (result < 0)
             throw new LibUsbException("Unable to claim interface",
                 result);
-        this.claimedInterfaceNumber = number;
+        this.claimedInterfaceNumbers.add(number);
     }
 
     /**
@@ -435,9 +436,9 @@ abstract class AbstractDevice implements UsbDevice
      */
     final void releaseInterface(final byte number) throws UsbException
     {
-        if (this.claimedInterfaceNumber == null)
+        if (this.claimedInterfaceNumbers.isEmpty())
             throw new UsbClaimException("No interface is claimed");
-        if (!Byte.valueOf(number).equals(this.claimedInterfaceNumber))
+        if (!this.claimedInterfaceNumbers.contains(number))
             throw new UsbClaimException("Interface not claimed");
 
         final DeviceHandle handle = open();
@@ -452,7 +453,7 @@ abstract class AbstractDevice implements UsbDevice
                 "Uanble to re-attach kernel driver", result);
         }
 
-        this.claimedInterfaceNumber = null;
+        this.claimedInterfaceNumbers.remove(number);
     }
 
     /**
@@ -464,7 +465,7 @@ abstract class AbstractDevice implements UsbDevice
      */
     final boolean isInterfaceClaimed(final byte number)
     {
-        return Byte.valueOf(number).equals(this.claimedInterfaceNumber);
+        return this.claimedInterfaceNumbers.contains(number);
     }
 
     @Override
