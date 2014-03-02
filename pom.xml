@@ -7,7 +7,7 @@
   <packaging>jar</packaging>
   <name>usb4java-javax</name>
   <version>1.2.0-SNAPSHOT</version>
-  <url>http://usb4java.org/</url>
+  <url>http://usb4java.org/usb4java-javax/</url>
   <description>
     Extension for usb4java which implements javax.usb (JSR-80).
   </description>

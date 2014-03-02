@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.3.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd">
+
+  <bannerLeft>
+    <name>usb4java</name>
+    <src>images/logo.png</src>
+    <href>http://usb4java.org/</href>
+  </bannerLeft>
+  
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-fluido-skin</artifactId>    
+    <version>1.3.0</version>
+  </skin>
+
+  <body>
+    <head>
+      <link href="favicon.ico" rel="SHORTCUT ICON" />
+    </head>
+    
+    <links>
+      <item name="javax.usb" href="http://javax-usb.sourceforge.net/" />
+      <item name="libusb" href="http://libusb.info/" />
+    </links>
+    
+    <breadcrumbs>
+      <item name="usb4java" href="http://usb4java.org/"/>
+      <item name="${project.name}" href="${project.url}"/>
+    </breadcrumbs>
+    
+    <menu name="usb4java-javax">
+      <item name="About" href="./index.html" />
+    </menu>
+    
+    <menu ref="reports" />
+    
+  </body>
+  
+  <custom>
+    <fluidoSkin>
+      <gitHub>
+        <projectId>usb4java</projectId>
+        <ribbonOrientation>right</ribbonOrientation>
+        <ribbonColor>red</ribbonColor>
+      </gitHub>
+    </fluidoSkin>
+  </custom>
+  
+</project>

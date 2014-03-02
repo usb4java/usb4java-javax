@@ -1,0 +1,16 @@
+#breadcrumbs .breadcrumb
+{
+    padding-right: 50px;
+}
+
+#breadcrumbs .breadcrumb a
+{
+    position: relative;
+    z-index: 10001;
+}
+
+a.externalLink
+{
+    background: none !important;
+    padding-right: 0 !important;
+}
