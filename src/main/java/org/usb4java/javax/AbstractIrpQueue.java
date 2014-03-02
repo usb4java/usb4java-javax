@@ -31,7 +31,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
     private final Queue<T> irps = new ConcurrentLinkedQueue<T>();
 
     /** The queue processor thread. */
-    private Thread processor;
+    private volatile Thread processor;
 
     /** The USB device. */
     private final AbstractDevice device;
