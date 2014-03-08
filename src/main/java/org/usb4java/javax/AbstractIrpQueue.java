@@ -83,33 +83,43 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
     {
         // Get the next IRP
         T irp = this.irps.poll();
-        while (irp != null)
+        
+        // If there are no IRPs to process then mark the thread as closing
+        // right away. Otherwise process the IRP (and more IRPs from the queue
+        // if present).
+        if (irp == null)
         {
-            // Process the IRP
-            try
+            this.processor = null;
+        }
+        else
+        {
+            while (irp != null)
             {
-                processIrp(irp);
+                // Process the IRP
+                try
+                {
+                    processIrp(irp);
+                }
+                catch (final UsbException e)
+                {
+                    irp.setUsbException(e);
+                }
+    
+                // Get next IRP and mark the thread as closing before sending the
+                // events for the previous IRP
+                final T nextIrp = this.irps.poll();
+                if (nextIrp == null) this.processor = null;
+    
+                // Finish the previous IRP
+                irp.complete();
+                finishIrp(irp);
+    
+                // Process next IRP (if present)
+                irp = nextIrp;
             }
-            catch (final UsbException e)
-            {
-                irp.setUsbException(e);
-            }
-
-            // Get next IRP and mark the thread as closing before sending the
-            // events for the previous IRP
-            final T nextIrp = this.irps.poll();
-            if (nextIrp == null) this.processor = null;
-
-            // Finish the previous IRP
-            irp.complete();
-            finishIrp(irp);
-
-            // Process next IRP (if present)
-            irp = nextIrp;
         }
 
         // No more IRPs are present in the queue so terminate the thread.
-        this.processor = null;
         synchronized (this.irps)
         {
             this.irps.notifyAll();
