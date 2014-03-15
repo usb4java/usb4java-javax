@@ -184,47 +184,92 @@ final class IrpQueue extends AbstractIrpQueue<UsbIrp>
      * @throws UsbException
      *             When data transfer fails.
      */
-    private int transfer(final DeviceHandle handle, 
-        final UsbEndpointDescriptor descriptor, final int type, 
+    private int transfer(final DeviceHandle handle,
+        final UsbEndpointDescriptor descriptor, final int type,
         final ByteBuffer buffer) throws UsbException
     {
         final byte address = descriptor.bEndpointAddress();
-        final int timeout = getConfig().getTimeout();
-        final boolean in = this.pipe.getUsbEndpoint().getDirection() == 
+        final boolean in = this.pipe.getUsbEndpoint().getDirection() ==
             UsbConst.ENDPOINT_DIRECTION_IN;
-        final IntBuffer transferred = IntBuffer.allocate(1);
-        int result;
         if (type == UsbConst.ENDPOINT_TYPE_BULK)
         {
-            do
-            {
-                result = LibUsb.bulkTransfer(handle, address, buffer, 
-                    transferred, timeout);
-            }
-            while (in && result == LibUsb.ERROR_TIMEOUT && !isAborting());
-            if (result < 0)
-            {
-                throw new LibUsbException(
-                    "Transfer error on bulk endpoint", result);
-            }
+            return transferBulk(handle, address, in, buffer);
         }
         else if (type == UsbConst.ENDPOINT_TYPE_INTERRUPT)
         {
-            do
-            {
-                result = LibUsb.interruptTransfer(handle, address, buffer, 
-                    transferred, timeout);
-            }
-            while (in && result == LibUsb.ERROR_TIMEOUT && !isAborting());
-            if (result < 0)
-            {
-                throw new LibUsbException(
-                    "Transfer error on interrupt endpoint", result);
-            }
+            return transferInterrupt(handle, address, in, buffer);
         }
         else
         {
             throw new UsbException("Unsupported endpoint type: " + type);
+        }
+    }
+
+    /**
+     * Transfers bulk data from or to the device.
+     * 
+     * @param handle
+     *            The device handle.
+     * @param address
+     *            The endpoint address.
+     * @param in
+     *            If bulk-in transfer.
+     * @param buffer
+     *            The data buffer.
+     * @return The number of transferred bytes.
+     * @throws LibUsbException
+     *             When data transfer fails.
+     */
+    private int transferBulk(final DeviceHandle handle, final byte address,
+        final boolean in, final ByteBuffer buffer) throws LibUsbException
+    {
+        final IntBuffer transferred = IntBuffer.allocate(1);
+        int result;
+        do
+        {
+            result = LibUsb.bulkTransfer(handle, address, buffer,
+                transferred, getConfig().getTimeout());
+        }
+        while (in && result == LibUsb.ERROR_TIMEOUT && !isAborting());
+        if (result < 0)
+        {
+            throw new LibUsbException(
+                "Transfer error on bulk endpoint", result);
+        }
+        return transferred.get(0);
+    }
+
+    /**
+     * Transfers interrupt data from or to the device.
+     * 
+     * @param handle
+     *            The device handle.
+     * @param address
+     *            The endpoint address.
+     * @param in
+     *            If interrupt-in transfer.
+     * @param buffer
+     *            The data buffer.
+     * @return The number of transferred bytes.
+     * @throws LibUsbException
+     *             When data transfer fails.
+     */
+    private int transferInterrupt(final DeviceHandle handle,
+        final byte address, final boolean in, final ByteBuffer buffer)
+        throws LibUsbException
+    {
+        final IntBuffer transferred = IntBuffer.allocate(1);
+        int result;
+        do
+        {
+            result = LibUsb.interruptTransfer(handle, address, buffer,
+                transferred, getConfig().getTimeout());
+        }
+        while (in && result == LibUsb.ERROR_TIMEOUT && !isAborting());
+        if (result < 0)
+        {
+            throw new LibUsbException(
+                "Transfer error on interrupt endpoint", result);
         }
         return transferred.get(0);
     }
