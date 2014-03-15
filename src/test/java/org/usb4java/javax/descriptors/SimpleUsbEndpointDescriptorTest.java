@@ -7,12 +7,10 @@ package org.usb4java.javax.descriptors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.usb4java.javax.descriptors.SimpleUsbEndpointDescriptor;
 
 /**
  * Tests the {@link SimpleUsbEndpointDescriptor}.
@@ -25,22 +23,22 @@ public class SimpleUsbEndpointDescriptorTest
     private static SimpleUsbEndpointDescriptor descriptor;
 
     /** Value for {@link SimpleUsbEndpointDescriptor#bLength()}. */
-    private static final byte LENGTH = 1;
+    private static final byte LENGTH = (byte) 0xff;
 
     /** Value for {@link SimpleUsbEndpointDescriptor#bDescriptorType()}. */
-    private static final byte DESCRIPTOR_TYPE = 2;
+    private static final byte DESCRIPTOR_TYPE = (byte) 0xfe;
 
     /** Value for {@link SimpleUsbEndpointDescriptor#bEndpointAddress()}. */
-    private static final byte ENDPOINT_ADDRESS = 3;
+    private static final byte ENDPOINT_ADDRESS = (byte) 0xfd;
 
     /** Value for {@link SimpleUsbEndpointDescriptor#bmAttributes()}. */
-    private static final byte ATTRIBUTES = 4;
+    private static final byte ATTRIBUTES = (byte) 0xfc;
 
     /** Value for {@link SimpleUsbEndpointDescriptor#wMaxPacketSize()}. */
-    private static final short MAX_PACKET_SIZE = 5;
+    private static final short MAX_PACKET_SIZE = (short) 0xffff;
 
     /** Value for {@link SimpleUsbEndpointDescriptor#bInterval()}. */
-    private static final byte INTERVAL = 6;
+    private static final byte INTERVAL = (byte) 0xfb;
 
     /** A wrong value for equality test. */
     private static final byte WRONG = 0;
@@ -55,7 +53,7 @@ public class SimpleUsbEndpointDescriptorTest
             LENGTH, DESCRIPTOR_TYPE, ENDPOINT_ADDRESS, ATTRIBUTES,
             MAX_PACKET_SIZE, INTERVAL);
     }
-    
+
     /**
      * Tests the {@link SimpleUsbEndpointDescriptor#bLength()} method.
      */
@@ -161,27 +159,15 @@ public class SimpleUsbEndpointDescriptorTest
     @Test
     public void testToString()
     {
-        assertEquals(descriptor.toString(), descriptor.toString());
-        assertEquals(descriptor.toString(), new SimpleUsbEndpointDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, ENDPOINT_ADDRESS, ATTRIBUTES,
-            MAX_PACKET_SIZE, INTERVAL).toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbEndpointDescriptor(
-            WRONG, DESCRIPTOR_TYPE, ENDPOINT_ADDRESS, ATTRIBUTES,
-            MAX_PACKET_SIZE, INTERVAL).toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbEndpointDescriptor(
-            LENGTH, WRONG, ENDPOINT_ADDRESS, ATTRIBUTES,
-            MAX_PACKET_SIZE, INTERVAL).toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbEndpointDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, WRONG, ATTRIBUTES,
-            MAX_PACKET_SIZE, INTERVAL).toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbEndpointDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, ENDPOINT_ADDRESS, WRONG,
-            MAX_PACKET_SIZE, INTERVAL).toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbEndpointDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, ENDPOINT_ADDRESS, ATTRIBUTES,
-            WRONG, INTERVAL).toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbEndpointDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, ENDPOINT_ADDRESS, ATTRIBUTES,
-            MAX_PACKET_SIZE, WRONG).toString());
+        assertEquals(String.format("Endpoint Descriptor:%n"
+            + "  bLength                255%n"
+            + "  bDescriptorType        254%n"
+            + "  bEndpointAddress      0xfd  EP 13 IN%n"
+            + "  bmAttributes           252%n"
+            + "    Transfer Type             Control%n"
+            + "    Synch Type                Synchronous%n"
+            + "    Usage Type                Reserved%n"
+            + "  wMaxPacketSize       65535%n"
+            + "  bInterval              251%n"), descriptor.toString());
     }
 }

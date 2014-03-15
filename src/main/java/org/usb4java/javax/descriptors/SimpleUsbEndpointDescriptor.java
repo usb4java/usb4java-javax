@@ -136,18 +136,6 @@ public final class SimpleUsbEndpointDescriptor extends SimpleUsbDescriptor
     @Override
     public String toString()
     {
-        return dump(this);
-    }
-
-    /**
-     * Dumps the specified USB endpoint descriptor into a string and returns it.
-     *
-     * @param descriptor
-     *            The USB endpoint descriptor to dump.
-     * @return The descriptor dump.
-     */
-    public static String dump(final UsbEndpointDescriptor descriptor)
-    {
         return String.format(
             "Endpoint Descriptor:%n" +
             "  bLength %18d%n" +
@@ -159,16 +147,16 @@ public final class SimpleUsbEndpointDescriptor extends SimpleUsbDescriptor
             "    Usage Type                %s%n" +
             "  wMaxPacketSize %11d%n" +
             "  bInterval %16d%n",
-            descriptor.bLength(),
-            descriptor.bDescriptorType(),
-            String.format("0x%02x", descriptor.bEndpointAddress() & 0xff),
-            descriptor.bEndpointAddress() & 0x0f,
-            DescriptorUtils.getDirectionName(descriptor.bEndpointAddress()),
-            descriptor.bmAttributes() & 0xff,
-            DescriptorUtils.getTransferTypeName(descriptor.bmAttributes()),
-            DescriptorUtils.getSynchTypeName(descriptor.bmAttributes()),
-            DescriptorUtils.getUsageTypeName(descriptor.bmAttributes()),
-            descriptor.wMaxPacketSize() & 0xffff,
-            descriptor.bInterval() & 0xff);
+            bLength() & 0xff,
+            bDescriptorType() & 0xff,
+            String.format("0x%02x", bEndpointAddress() & 0xff),
+            bEndpointAddress() & 0x0f,
+            DescriptorUtils.getDirectionName(bEndpointAddress()),
+            bmAttributes() & 0xff,
+            DescriptorUtils.getTransferTypeName(bmAttributes()),
+            DescriptorUtils.getSynchTypeName(bmAttributes()),
+            DescriptorUtils.getUsageTypeName(bmAttributes()),
+            wMaxPacketSize() & 0xffff,
+            bInterval() & 0xff);
     }
 }
