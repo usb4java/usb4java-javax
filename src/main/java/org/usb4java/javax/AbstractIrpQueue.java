@@ -108,8 +108,8 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
                     irp.setUsbException(e);
                 }
     
-                // Get next IRP and mark the thread as closing before sending the
-                // events for the previous IRP
+                // Get next IRP and mark the thread as closing before sending
+                // the events for the previous IRP
                 final T nextIrp = this.irps.poll();
                 if (nextIrp == null) this.processor = null;
     
