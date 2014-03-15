@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.usb.UsbClaimException;
 import javax.usb.UsbConst;
@@ -70,7 +71,7 @@ abstract class AbstractDevice implements UsbDevice
     private byte activeConfigurationNumber = 0;
 
     /** The numbers of the currently claimed interface. */
-    private HashSet<Byte> claimedInterfaceNumbers = new HashSet<Byte>();
+    private Set<Byte> claimedInterfaceNumbers = new HashSet<Byte>();
 
     /** The port this device is connected to. */
     private UsbPort port;
