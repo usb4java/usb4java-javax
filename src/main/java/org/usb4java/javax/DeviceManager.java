@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.usb.UsbException;
 import javax.usb.UsbHub;
+import javax.usb.UsbPlatformException;
 
 import org.usb4java.Context;
 import org.usb4java.Device;
@@ -64,7 +65,10 @@ final class DeviceManager
         this.context = new Context();
         final int result = LibUsb.init(this.context);
         if (result != 0)
-            throw new LibUsbException("Unable to initialize libusb", result);
+        {
+            throw ExceptionUtils.createPlatformException(
+                "Unable to initialize libusb", result);
+        }
     }
 
     /**
@@ -82,11 +86,11 @@ final class DeviceManager
      * @param device
      *            The libusb device. Must not be null.
      * @return The device id.
-     * @throws LibUsbException
+     * @throws UsbPlatformException
      *             When device descriptor could not be read from the specified
      *             device.
      */
-    private DeviceId createId(final Device device) throws LibUsbException
+    private DeviceId createId(final Device device) throws UsbPlatformException
     {
         if (device == null)
             throw new IllegalArgumentException("device must be set");
@@ -97,7 +101,7 @@ final class DeviceManager
         final int result = LibUsb.getDeviceDescriptor(device, deviceDescriptor);
         if (result < 0)
         {
-            throw new LibUsbException(
+            throw ExceptionUtils.createPlatformException(
                 "Unable to get device descriptor for device " + addressNumber
                     + " at bus " + busNumber, result);
         }
@@ -171,7 +175,7 @@ final class DeviceManager
         {
             updateDeviceList();
         }
-        catch (LibUsbException e)
+        catch (UsbException e)
         {
             throw new ScanException("Unable to scan for USB devices: " + e, e);
         }
@@ -194,11 +198,11 @@ final class DeviceManager
      * Updates the device list by adding newly connected devices to it and by
      * removing no longer connected devices.
      * 
-     * @throws LibUsbException
+     * @throws UsbPlatformException
      *             When libusb reported an error which we can't ignore during
      *             scan.
      */
-    private void updateDeviceList() throws LibUsbException
+    private void updateDeviceList() throws UsbPlatformException
     {
         final List<DeviceId> current = new ArrayList<DeviceId>();
 
@@ -206,8 +210,10 @@ final class DeviceManager
         final DeviceList devices = new DeviceList();
         final int result = LibUsb.getDeviceList(this.context, devices);
         if (result < 0)
-            throw new LibUsbException("Unable to get USB device list",
-                result);
+        {
+            throw ExceptionUtils.createPlatformException(            
+                "Unable to get USB device list", result);
+        }
 
         try
         {
@@ -245,7 +251,7 @@ final class DeviceManager
                     // Remember current device as "current"
                     current.add(id);
                 }
-                catch (LibUsbException e)
+                catch (UsbPlatformException e)
                 {
                     // Devices which can't be enumerated are ignored
                     continue;
@@ -278,18 +284,20 @@ final class DeviceManager
      * @return device The libusb device. Never null.
      * @throws DeviceNotFoundException
      *             When the device was not found.
-     * @throws LibUsbException
+     * @throws UsbPlatformException
      *             When libusb reported an error while enumerating USB devices.
      */
-    public Device getLibUsbDevice(final DeviceId id) throws LibUsbException
+    public Device getLibUsbDevice(final DeviceId id) throws UsbPlatformException
     {
         if (id == null) throw new IllegalArgumentException("id must be set");
 
         final DeviceList devices = new DeviceList();
         final int result = LibUsb.getDeviceList(this.context, devices);
         if (result < 0)
-            throw new LibUsbException("Unable to get USB device list",
-                result);
+        {
+            throw ExceptionUtils.createPlatformException(
+                "Unable to get USB device list", result);
+        }
         try
         {
             for (Device device: devices)
@@ -302,7 +310,7 @@ final class DeviceManager
                         return device;
                     }
                 }
-                catch (LibUsbException e)
+                catch (UsbPlatformException e)
                 {
                     // Devices for which no ID can be created are ignored
                     continue;

@@ -5,6 +5,8 @@
 
 package org.usb4java.javax;
 
+import javax.usb.UsbPlatformException;
+
 import org.usb4java.Device;
 
 /**
@@ -30,12 +32,12 @@ class NonHub extends AbstractDevice
      *            The libusb device. This reference is only valid during the
      *            constructor execution, so don't store it in a property or
      *            something like that.
-     * @throws LibUsbException
+     * @throws UsbPlatformException
      *             When device configuration could not be read.
      */
     NonHub(final DeviceManager manager, final DeviceId id,
         final DeviceId parentId, final int speed, final Device device)
-        throws LibUsbException
+        throws UsbPlatformException
     {
         super(manager, id, parentId, speed, device);
     }

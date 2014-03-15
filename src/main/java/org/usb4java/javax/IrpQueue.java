@@ -8,6 +8,7 @@ package org.usb4java.javax;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
+import javax.usb.UsbAbortException;
 import javax.usb.UsbConst;
 import javax.usb.UsbControlIrp;
 import javax.usb.UsbEndpoint;
@@ -217,11 +218,11 @@ final class IrpQueue extends AbstractIrpQueue<UsbIrp>
      * @param buffer
      *            The data buffer.
      * @return The number of transferred bytes.
-     * @throws LibUsbException
+     * @throws UsbException
      *             When data transfer fails.
      */
     private int transferBulk(final DeviceHandle handle, final byte address,
-        final boolean in, final ByteBuffer buffer) throws LibUsbException
+        final boolean in, final ByteBuffer buffer) throws UsbException
     {
         final IntBuffer transferred = IntBuffer.allocate(1);
         int result;
@@ -229,11 +230,13 @@ final class IrpQueue extends AbstractIrpQueue<UsbIrp>
         {
             result = LibUsb.bulkTransfer(handle, address, buffer,
                 transferred, getConfig().getTimeout());
+            if (result == LibUsb.ERROR_TIMEOUT && isAborting())
+                throw new UsbAbortException();
         }
-        while (in && result == LibUsb.ERROR_TIMEOUT && !isAborting());
+        while (in && result == LibUsb.ERROR_TIMEOUT);
         if (result < 0)
         {
-            throw new LibUsbException(
+            throw ExceptionUtils.createPlatformException(
                 "Transfer error on bulk endpoint", result);
         }
         return transferred.get(0);
@@ -251,12 +254,12 @@ final class IrpQueue extends AbstractIrpQueue<UsbIrp>
      * @param buffer
      *            The data buffer.
      * @return The number of transferred bytes.
-     * @throws LibUsbException
+     * @throws UsbException
      *             When data transfer fails.
      */
     private int transferInterrupt(final DeviceHandle handle,
         final byte address, final boolean in, final ByteBuffer buffer)
-        throws LibUsbException
+        throws UsbException
     {
         final IntBuffer transferred = IntBuffer.allocate(1);
         int result;
@@ -264,11 +267,13 @@ final class IrpQueue extends AbstractIrpQueue<UsbIrp>
         {
             result = LibUsb.interruptTransfer(handle, address, buffer,
                 transferred, getConfig().getTimeout());
+            if (result == LibUsb.ERROR_TIMEOUT && isAborting())
+                throw new UsbAbortException();
         }
-        while (in && result == LibUsb.ERROR_TIMEOUT && !isAborting());
+        while (in && result == LibUsb.ERROR_TIMEOUT);
         if (result < 0)
         {
-            throw new LibUsbException(
+            throw ExceptionUtils.createPlatformException(
                 "Transfer error on interrupt endpoint", result);
         }
         return transferred.get(0);

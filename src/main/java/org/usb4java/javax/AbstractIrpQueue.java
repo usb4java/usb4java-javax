@@ -226,7 +226,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
             getConfig().getTimeout());
         if (result < 0)
         {
-            throw new LibUsbException(
+            throw ExceptionUtils.createPlatformException(
                 "Unable to submit control message", result);
         }
         buffer.rewind();

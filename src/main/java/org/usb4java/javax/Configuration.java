@@ -169,7 +169,7 @@ final class Configuration implements UsbConfiguration
                 iface.getUsbInterfaceDescriptor().bAlternateSetting());
             if (result < 0)
             {
-                throw new LibUsbException(
+                throw ExceptionUtils.createPlatformException(
                     "Unable to set alternate interface", result);
             }
             this.activeSettings.put(number & 0xff, iface);

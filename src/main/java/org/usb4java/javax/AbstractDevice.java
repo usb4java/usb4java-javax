@@ -23,6 +23,7 @@ import javax.usb.UsbDevice;
 import javax.usb.UsbDeviceDescriptor;
 import javax.usb.UsbDisconnectedException;
 import javax.usb.UsbException;
+import javax.usb.UsbPlatformException;
 import javax.usb.UsbPort;
 import javax.usb.UsbStringDescriptor;
 import javax.usb.event.UsbDeviceEvent;
@@ -99,12 +100,12 @@ abstract class AbstractDevice implements UsbDevice
      *            The libusb device. This reference is only valid during the
      *            constructor execution, so don't store it in a property or
      *            something like that.
-     * @throws LibUsbException
+     * @throws UsbPlatformException
      *             When device configuration could not be read.
      */
     AbstractDevice(final DeviceManager manager, final DeviceId id,
         final DeviceId parentId, final int speed, final Device device)
-        throws LibUsbException
+        throws UsbPlatformException
     {
         if (manager == null)
             throw new IllegalArgumentException("manager must be set");
@@ -126,8 +127,9 @@ abstract class AbstractDevice implements UsbDevice
                 configDescriptor);
             if (result < 0)
             {
-                throw new LibUsbException("Unable to get configuation " + i
-                    + " for device " + id, result);
+                throw ExceptionUtils.createPlatformException(
+                    "Unable to get configuation " + i + " for device " + id,
+                    result);
             }
             try
             {
@@ -159,7 +161,7 @@ abstract class AbstractDevice implements UsbDevice
         }
         else if (result < 0)
         {
-            throw new LibUsbException(
+            throw ExceptionUtils.createPlatformException(
                 "Unable to read active config descriptor from device " + id,
                 result);
         }
@@ -221,8 +223,8 @@ abstract class AbstractDevice implements UsbDevice
                 final int result = LibUsb.open(device, handle);
                 if (result < 0)
                 {
-                    throw new LibUsbException("Can't open device "
-                        + this.id, result);
+                    throw ExceptionUtils.createPlatformException(
+                        "Can't open device " + this.id, result);
                 }
                 this.handle = handle;
             }
@@ -379,8 +381,8 @@ abstract class AbstractDevice implements UsbDevice
 
             final int result = LibUsb.setConfiguration(open(), number & 0xff);
             if (result < 0)
-                throw new LibUsbException("Unable to set configuration",
-                    result);
+                throw ExceptionUtils.createPlatformException(
+                    "Unable to set configuration", result);
             this.activeConfigurationNumber = number;
         }
     }
@@ -414,16 +416,20 @@ abstract class AbstractDevice implements UsbDevice
             {
                 result = LibUsb.detachKernelDriver(handle, number);
                 if (result < 0)
-                    throw new LibUsbException(
+                {
+                    throw ExceptionUtils.createPlatformException(
                         "Unable to detach kernel driver", result);
+                }
                 this.detachedKernelDriver = true;
             }
         }
 
         final int result = LibUsb.claimInterface(handle, number & 0xff);
         if (result < 0)
-            throw new LibUsbException("Unable to claim interface",
-                result);
+        {
+            throw ExceptionUtils.createPlatformException(
+                "Unable to claim interface", result);
+        }
         this.claimedInterfaceNumbers.add(number);
     }
 
@@ -444,14 +450,20 @@ abstract class AbstractDevice implements UsbDevice
 
         final DeviceHandle handle = open();
         int result = LibUsb.releaseInterface(handle, number & 0xff);
-        if (result < 0) throw new LibUsbException(
-            "Unable to release interface", result);
+        if (result < 0)
+        {
+            throw ExceptionUtils.createPlatformException(
+                "Unable to release interface", result);
+        }
 
         if (this.detachedKernelDriver)
         {
             result = LibUsb.attachKernelDriver(handle, number & 0xff);
-            if (result < 0) throw new LibUsbException(
-                "Uanble to re-attach kernel driver", result);
+            if (result < 0)
+            {
+                throw ExceptionUtils.createPlatformException(
+                    "Uanble to re-attach kernel driver", result);
+            }
         }
 
         this.claimedInterfaceNumbers.remove(number);
@@ -499,8 +511,11 @@ abstract class AbstractDevice implements UsbDevice
         final int result =
             LibUsb.getStringDescriptor(handle, index, langId, data);
         if (result < 0)
-            throw new LibUsbException("Unable to get string descriptor "
-                + index + " from device " + this, result);
+        {
+            throw ExceptionUtils.createPlatformException(
+                "Unable to get string descriptor " + index + " from device "
+                    + this, result);
+        }
         return new SimpleUsbStringDescriptor(data);
     }
 
@@ -525,8 +540,10 @@ abstract class AbstractDevice implements UsbDevice
         final int result = LibUsb.getDescriptor(handle, LibUsb.DT_STRING,
             (byte) 0, buffer);
         if (result < 0)
-            throw new LibUsbException(
+        {
+            throw ExceptionUtils.createPlatformException(
                 "Unable to get string descriptor languages", result);
+        }
         if (result < 2)
             throw new UsbException("Received illegal descriptor length: "
                 + result);

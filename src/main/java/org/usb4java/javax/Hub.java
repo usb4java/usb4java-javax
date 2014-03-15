@@ -8,6 +8,7 @@ package org.usb4java.javax;
 import java.util.List;
 
 import javax.usb.UsbHub;
+import javax.usb.UsbPlatformException;
 
 import org.usb4java.Device;
 
@@ -37,12 +38,12 @@ final class Hub extends AbstractDevice implements UsbHub,
      *            The libusb device. This reference is only valid during the
      *            constructor execution, so don't store it in a property or
      *            something like that.
-     * @throws LibUsbException
+     * @throws UsbPlatformException
      *             When device configuration could not be read.
      */
     Hub(final DeviceManager manager, final DeviceId id,
         final DeviceId parentId, final int speed, final Device device)
-        throws LibUsbException
+        throws UsbPlatformException
     {
         super(manager, id, parentId, speed, device);
     }
