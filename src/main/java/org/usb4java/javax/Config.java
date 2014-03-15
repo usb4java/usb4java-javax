@@ -18,7 +18,7 @@ final class Config
     private static final String KEY_BASE = "org.usb4java.javax.";
     
     /** The default USB communication timeout in milliseconds. */
-    private static final int DEFAULT_TIMEOUT = 2500;
+    private static final int DEFAULT_TIMEOUT = 5000;
     
     /** The default scan interval in milliseconds. */
     private static final int DEFAULT_SCAN_INTERVAL = 500;

@@ -188,13 +188,20 @@ final class IrpQueue extends AbstractIrpQueue<UsbIrp>
         final UsbEndpointDescriptor descriptor, final int type, 
         final ByteBuffer buffer) throws UsbException
     {
+        final byte address = descriptor.bEndpointAddress();
+        final int timeout = getConfig().getTimeout();
+        final boolean in = this.pipe.getUsbEndpoint().getDirection() == 
+            UsbConst.ENDPOINT_DIRECTION_IN;
         final IntBuffer transferred = IntBuffer.allocate(1);
         int result;
         if (type == UsbConst.ENDPOINT_TYPE_BULK)
         {
-            result = LibUsb.bulkTransfer(handle,
-                descriptor.bEndpointAddress(), buffer, transferred,
-                getConfig().getTimeout());
+            do
+            {
+                result = LibUsb.bulkTransfer(handle, address, buffer, 
+                    transferred, timeout);
+            }
+            while (in && result == LibUsb.ERROR_TIMEOUT && !this.aborting);
             if (result < 0)
             {
                 throw new LibUsbException(
@@ -203,9 +210,12 @@ final class IrpQueue extends AbstractIrpQueue<UsbIrp>
         }
         else if (type == UsbConst.ENDPOINT_TYPE_INTERRUPT)
         {
-            result = LibUsb.interruptTransfer(handle,
-                descriptor.bEndpointAddress(), buffer, transferred,
-                getConfig().getTimeout());
+            do
+            {
+                result = LibUsb.interruptTransfer(handle, address, buffer, 
+                    transferred, timeout);
+            }
+            while (in && result == LibUsb.ERROR_TIMEOUT && !this.aborting);
             if (result < 0)
             {
                 throw new LibUsbException(

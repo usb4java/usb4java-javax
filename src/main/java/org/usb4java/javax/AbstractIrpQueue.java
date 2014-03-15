@@ -32,6 +32,9 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
 
     /** The queue processor thread. */
     private volatile Thread processor;
+    
+    /** If queue is currently aborting. */
+    protected volatile boolean aborting;
 
     /** The USB device. */
     private final AbstractDevice device;
@@ -152,6 +155,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      */
     public final void abort()
     {
+        this.aborting = true;
         this.irps.clear();
         while (isBusy())
         {
@@ -167,6 +171,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
                 Thread.currentThread().interrupt();
             }
         }
+        this.aborting = false;
     }
 
     /**
