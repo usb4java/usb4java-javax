@@ -182,19 +182,6 @@ public final class SimpleUsbInterfaceDescriptor extends SimpleUsbDescriptor
     @Override
     public String toString()
     {
-        return dump(this);
-    }
-
-    /**
-     * Dumps the specified USB interface descriptor into a string and returns
-     * it.
-     *
-     * @param descriptor
-     *            The USB interface descriptor to dump.
-     * @return The descriptor dump.
-     */
-    public static String dump(final UsbInterfaceDescriptor descriptor)
-    {
         return String.format(
             "Interface Descriptor:%n" +
             "  bLength %18d%n" +
@@ -206,15 +193,15 @@ public final class SimpleUsbInterfaceDescriptor extends SimpleUsbDescriptor
             "  bInterfaceSubClass %7d%n" +
             "  bInterfaceProtocol %7d%n" +
             "  iInterface %15d%n",
-            descriptor.bLength(),
-            descriptor.bDescriptorType(),
-            descriptor.bInterfaceNumber() & 0xff,
-            descriptor.bAlternateSetting() & 0xff,
-            descriptor.bNumEndpoints() & 0xff,
-            descriptor.bInterfaceClass() & 0xff,
-            DescriptorUtils.getUSBClassName(descriptor.bInterfaceClass()),
-            descriptor.bInterfaceSubClass() & 0xff,
-            descriptor.bInterfaceProtocol() & 0xff,
-            descriptor.iInterface() & 0xff);
+            bLength() & 0xff,
+            bDescriptorType() & 0xff,
+            bInterfaceNumber() & 0xff,
+            bAlternateSetting() & 0xff,
+            bNumEndpoints() & 0xff,
+            bInterfaceClass() & 0xff,
+            DescriptorUtils.getUSBClassName(bInterfaceClass()),
+            bInterfaceSubClass() & 0xff,
+            bInterfaceProtocol() & 0xff,
+            iInterface() & 0xff);
     }
 }

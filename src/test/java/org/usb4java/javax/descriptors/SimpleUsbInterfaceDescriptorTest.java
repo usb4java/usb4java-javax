@@ -7,12 +7,10 @@ package org.usb4java.javax.descriptors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.usb4java.javax.descriptors.SimpleUsbInterfaceDescriptor;
 
 /**
  * Tests the {@link SimpleUsbInterfaceDescriptor}.
@@ -25,31 +23,31 @@ public class SimpleUsbInterfaceDescriptorTest
     private static SimpleUsbInterfaceDescriptor descriptor;
 
     /** Value for {@link SimpleUsbInterfaceDescriptor#bLength()}. */
-    private static final byte LENGTH = 1;
+    private static final byte LENGTH = (byte) 0xff;
 
     /** Value for {@link SimpleUsbInterfaceDescriptor#bDescriptorType()}. */
-    private static final byte DESCRIPTOR_TYPE = 2;
+    private static final byte DESCRIPTOR_TYPE = (byte) 0xfe;
 
     /** Value for {@link SimpleUsbInterfaceDescriptor#bInterfaceNumber()}. */
-    private static final byte INTERFACE_NUMBER = 3;
+    private static final byte INTERFACE_NUMBER = (byte) 0xfd;
 
     /** Value for {@link SimpleUsbInterfaceDescriptor#bAlternateSetting()}. */
-    private static final byte ALTERNATE_SETTING = 4;
+    private static final byte ALTERNATE_SETTING = (byte) 0xfc;
 
     /** Value for {@link SimpleUsbInterfaceDescriptor#bNumEndpoints()}. */
-    private static final byte NUM_ENDPOINTS = 5;
+    private static final byte NUM_ENDPOINTS = (byte) 0xfb;
 
     /** Value for {@link SimpleUsbInterfaceDescriptor#bInterfaceClass()}. */
-    private static final byte INTERFACE_CLASS = 6;
+    private static final byte INTERFACE_CLASS = (byte) 0xfa;
 
     /** Value for {@link SimpleUsbInterfaceDescriptor#bInterfaceSubClass()}. */
-    private static final byte INTERFACE_SUB_CLASS = 7;
+    private static final byte INTERFACE_SUB_CLASS = (byte) 0xf9;
 
     /** Value for {@link SimpleUsbInterfaceDescriptor#bInterfaceProtocol()}. */
-    private static final byte INTERFACE_PROTOCOL = 8;
+    private static final byte INTERFACE_PROTOCOL = (byte) 0xf8;
 
     /** Value for {@link SimpleUsbInterfaceDescriptor#iInterface()}. */
-    private static final byte INTERFACE = 9;
+    private static final byte INTERFACE = (byte) 0xf7;
 
     /** A wrong value for equality test. */
     private static final byte WRONG = 0;
@@ -221,56 +219,15 @@ public class SimpleUsbInterfaceDescriptorTest
     @Test
     public void testToString()
     {
-        assertEquals(descriptor.toString(), descriptor.toString());
-        assertEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, INTERFACE_NUMBER, ALTERNATE_SETTING,
-                NUM_ENDPOINTS, INTERFACE_CLASS, INTERFACE_SUB_CLASS,
-                INTERFACE_PROTOCOL, INTERFACE).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                WRONG, DESCRIPTOR_TYPE, INTERFACE_NUMBER, ALTERNATE_SETTING,
-                NUM_ENDPOINTS, INTERFACE_CLASS, INTERFACE_SUB_CLASS,
-                INTERFACE_PROTOCOL, INTERFACE).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                LENGTH, WRONG, INTERFACE_NUMBER, ALTERNATE_SETTING,
-                NUM_ENDPOINTS, INTERFACE_CLASS, INTERFACE_SUB_CLASS,
-                INTERFACE_PROTOCOL, INTERFACE).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, WRONG, ALTERNATE_SETTING,
-                NUM_ENDPOINTS, INTERFACE_CLASS, INTERFACE_SUB_CLASS,
-                INTERFACE_PROTOCOL, INTERFACE).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, INTERFACE_NUMBER, WRONG,
-                NUM_ENDPOINTS, INTERFACE_CLASS, INTERFACE_SUB_CLASS,
-                INTERFACE_PROTOCOL, INTERFACE).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, INTERFACE_NUMBER, ALTERNATE_SETTING,
-                WRONG, INTERFACE_CLASS, INTERFACE_SUB_CLASS,
-                INTERFACE_PROTOCOL, INTERFACE).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, INTERFACE_NUMBER, ALTERNATE_SETTING,
-                NUM_ENDPOINTS, WRONG, INTERFACE_SUB_CLASS,
-                INTERFACE_PROTOCOL, INTERFACE).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, INTERFACE_NUMBER, ALTERNATE_SETTING,
-                NUM_ENDPOINTS, INTERFACE_CLASS, WRONG,
-                INTERFACE_PROTOCOL, INTERFACE).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, INTERFACE_NUMBER, ALTERNATE_SETTING,
-                NUM_ENDPOINTS, INTERFACE_CLASS, INTERFACE_SUB_CLASS,
-                WRONG, INTERFACE).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbInterfaceDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, INTERFACE_NUMBER, ALTERNATE_SETTING,
-                NUM_ENDPOINTS, INTERFACE_CLASS, INTERFACE_SUB_CLASS,
-                INTERFACE_PROTOCOL, WRONG).toString());
+        assertEquals(String.format("Interface Descriptor:%n"
+            + "  bLength                255%n"
+            + "  bDescriptorType        254%n"
+            + "  bInterfaceNumber       253%n"
+            + "  bAlternateSetting      252%n"
+            + "  bNumEndpoints          251%n"
+            + "  bInterfaceClass        250 Unknown%n"
+            + "  bInterfaceSubClass     249%n"
+            + "  bInterfaceProtocol     248%n"
+            + "  iInterface             247%n"), descriptor.toString());
     }
 }
