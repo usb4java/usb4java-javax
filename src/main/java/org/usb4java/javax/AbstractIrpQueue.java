@@ -34,7 +34,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
     private volatile Thread processor;
     
     /** If queue is currently aborting. */
-    protected volatile boolean aborting;
+    private volatile boolean aborting;
 
     /** The USB device. */
     private final AbstractDevice device;
@@ -237,5 +237,15 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
         {
             throw new UsbShortPacketException();
         }
-    }    
+    }
+    
+    /**
+     * Checks if this queue is currently aborting.
+     * 
+     * @return True if queue is aborting, false if not.
+     */
+    protected final boolean isAborting()
+    {
+        return this.aborting;
+    }
 }

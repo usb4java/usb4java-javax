@@ -201,7 +201,7 @@ final class IrpQueue extends AbstractIrpQueue<UsbIrp>
                 result = LibUsb.bulkTransfer(handle, address, buffer, 
                     transferred, timeout);
             }
-            while (in && result == LibUsb.ERROR_TIMEOUT && !this.aborting);
+            while (in && result == LibUsb.ERROR_TIMEOUT && !isAborting());
             if (result < 0)
             {
                 throw new LibUsbException(
@@ -215,7 +215,7 @@ final class IrpQueue extends AbstractIrpQueue<UsbIrp>
                 result = LibUsb.interruptTransfer(handle, address, buffer, 
                     transferred, timeout);
             }
-            while (in && result == LibUsb.ERROR_TIMEOUT && !this.aborting);
+            while (in && result == LibUsb.ERROR_TIMEOUT && !isAborting());
             if (result < 0)
             {
                 throw new LibUsbException(
