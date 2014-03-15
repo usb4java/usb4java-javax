@@ -27,7 +27,7 @@ public class ConfigTest
     {
         final Properties properties = new Properties();
         final Config config = new Config(properties);
-        assertEquals(2500, config.getTimeout());
+        assertEquals(5000, config.getTimeout());
         assertEquals(500, config.getScanInterval());
     }
     
