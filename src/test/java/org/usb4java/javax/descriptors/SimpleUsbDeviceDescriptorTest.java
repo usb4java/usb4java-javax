@@ -7,12 +7,10 @@ package org.usb4java.javax.descriptors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.usb4java.javax.descriptors.SimpleUsbDeviceDescriptor;
 
 /**
  * Tests the {@link SimpleUsbDeviceDescriptor}.
@@ -25,46 +23,46 @@ public class SimpleUsbDeviceDescriptorTest
     private static SimpleUsbDeviceDescriptor descriptor;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#bLength()}. */
-    private static final byte LENGTH = 1;
+    private static final byte LENGTH = (byte) 0xff;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#bDescriptorType()}. */
-    private static final byte DESCRIPTOR_TYPE = 2;
+    private static final byte DESCRIPTOR_TYPE = (byte) 0xfe;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#bcdUSB()}. */
-    private static final short USB = 3;
+    private static final short USB = (short) 0xffff;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#bDeviceClass()}. */
-    private static final byte DEVICE_CLASS = 4;
+    private static final byte DEVICE_CLASS = (byte) 0xfd;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#bDeviceSubClass()}. */
-    private static final byte DEVICE_SUB_CLASS = 5;
+    private static final byte DEVICE_SUB_CLASS = (byte) 0xfc;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#bDeviceProtocol()}. */
-    private static final byte DEVICE_PROTOCOL = 6;
+    private static final byte DEVICE_PROTOCOL = (byte) 0xfb;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#bMaxPacketSize0()}. */
-    private static final byte MAX_PACKET_SIZE0 = 7;
+    private static final byte MAX_PACKET_SIZE0 = (byte) 0xfa;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#idVendor()}. */
-    private static final short ID_VENDOR = 8;
+    private static final short ID_VENDOR = (short) 0xfffe;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#idProduct()}. */
-    private static final short ID_PRODUCT = 9;
+    private static final short ID_PRODUCT = (short) 0xfffd;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#bcdDevice()}. */
-    private static final short DEVICE = 10;
+    private static final short DEVICE = (short) 0xfffc;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#iManufacturer()}. */
-    private static final byte MANUFACTURER = 11;
+    private static final byte MANUFACTURER = (byte) 0xf9;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#iProduct()}. */
-    private static final byte PRODUCT = 12;
+    private static final byte PRODUCT = (byte) 0xf8;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#iSerialNumber()}. */
-    private static final byte SERIAL_NUMBER = 13;
+    private static final byte SERIAL_NUMBER = (byte) 0xf7;
 
     /** Value for {@link SimpleUsbDeviceDescriptor#bNumConfigurations()}. */
-    private static final byte NUM_CONFIGURATIONS = 14;
+    private static final byte NUM_CONFIGURATIONS = (byte) 0xf6;
 
     /** A wrong value for equality test. */
     private static final byte WRONG = 0;
@@ -206,10 +204,10 @@ public class SimpleUsbDeviceDescriptorTest
     {
         final int code = descriptor.hashCode();
         assertEquals(code, descriptor.hashCode());
-        assertEquals(code,new SimpleUsbDeviceDescriptor(
+        assertEquals(code, new SimpleUsbDeviceDescriptor(
             LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
             DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, 
+            MANUFACTURER, PRODUCT, SERIAL_NUMBER,
             NUM_CONFIGURATIONS).hashCode());
     }
 
@@ -290,81 +288,20 @@ public class SimpleUsbDeviceDescriptorTest
     @Test
     public void testToString()
     {
-        assertEquals(descriptor.toString(), descriptor.toString());
-        assertEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, 
-            NUM_CONFIGURATIONS).toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            WRONG, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, WRONG, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, WRONG, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, WRONG, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, WRONG,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            WRONG, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, WRONG, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, WRONG, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, WRONG, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, WRONG,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            WRONG, PRODUCT, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, WRONG, SERIAL_NUMBER, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, WRONG, NUM_CONFIGURATIONS)
-            .toString());
-        assertNotEquals(descriptor.toString(), new SimpleUsbDeviceDescriptor(
-            LENGTH, DESCRIPTOR_TYPE, USB, DEVICE_CLASS, DEVICE_SUB_CLASS,
-            DEVICE_PROTOCOL, MAX_PACKET_SIZE0, ID_VENDOR, ID_PRODUCT, DEVICE,
-            MANUFACTURER, PRODUCT, SERIAL_NUMBER, WRONG)
-            .toString());
+        assertEquals(String.format("Device Descriptor:%n"
+            + "  bLength                255%n"
+            + "  bDescriptorType        254%n"
+            + "  bcdUSB               ff.ff%n"
+            + "  bDeviceClass           253 Unknown%n"
+            + "  bDeviceSubClass        252%n"
+            + "  bDeviceProtocol        251%n"
+            + "  bMaxPacketSize0        250%n"
+            + "  idVendor            0xfffe%n"
+            + "  idProduct           0xfffd%n"
+            + "  bcdDevice            ff.fc%n"
+            + "  iManufacturer          249%n"
+            + "  iProduct               248%n"
+            + "  iSerial                247%n"
+            + "  bNumConfigurations     246%n"), descriptor.toString());
     }
 }

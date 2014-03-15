@@ -258,18 +258,6 @@ public final class SimpleUsbDeviceDescriptor extends SimpleUsbDescriptor
     @Override
     public String toString()
     {
-        return dump(this);
-    }
-
-    /**
-     * Dumps the specified USB device descriptor into a string and returns it.
-     *
-     * @param descriptor
-     *            The USB device descriptor to dump.
-     * @return The descriptor dump.
-     */
-    public static String dump(final UsbDeviceDescriptor descriptor)
-    {
         return String.format(
             "Device Descriptor:%n" +
             "  bLength %18d%n" +
@@ -286,20 +274,20 @@ public final class SimpleUsbDeviceDescriptor extends SimpleUsbDescriptor
             "  iProduct %17d%n" +
             "  iSerial %18d%n" +
             "  bNumConfigurations %7d%n",
-            descriptor.bLength(),
-            descriptor.bDescriptorType(),
-            DescriptorUtils.decodeBCD(descriptor.bcdUSB()),
-            descriptor.bDeviceClass() & 0xff,
-            DescriptorUtils.getUSBClassName(descriptor.bDeviceClass()),
-            descriptor.bDeviceSubClass() & 0xff,
-            descriptor.bDeviceProtocol() & 0xff,
-            descriptor.bMaxPacketSize0() & 0xff,
-            String.format("0x%04x", descriptor.idVendor() & 0xffff),
-            String.format("0x%04x", descriptor.idProduct() & 0xffff),
-            DescriptorUtils.decodeBCD(descriptor.bcdDevice()),
-            descriptor.iManufacturer() & 0xff,
-            descriptor.iProduct() & 0xff,
-            descriptor.iSerialNumber() & 0xff,
-            descriptor.bNumConfigurations() & 0xff);
+            bLength() & 0xff,
+            bDescriptorType() & 0xff,
+            DescriptorUtils.decodeBCD(bcdUSB()),
+            bDeviceClass() & 0xff,
+            DescriptorUtils.getUSBClassName(bDeviceClass()),
+            bDeviceSubClass() & 0xff,
+            bDeviceProtocol() & 0xff,
+            bMaxPacketSize0() & 0xff,
+            String.format("0x%04x", idVendor() & 0xffff),
+            String.format("0x%04x", idProduct() & 0xffff),
+            DescriptorUtils.decodeBCD(bcdDevice()),
+            iManufacturer() & 0xff,
+            iProduct() & 0xff,
+            iSerialNumber() & 0xff,
+            bNumConfigurations() & 0xff);
     }
 }
