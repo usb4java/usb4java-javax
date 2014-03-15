@@ -7,12 +7,10 @@ package org.usb4java.javax.descriptors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.usb4java.javax.descriptors.SimpleUsbConfigurationDescriptor;
 
 /**
  * Tests the {@link SimpleUsbConfigurationDescriptor}.
@@ -25,30 +23,30 @@ public class SimpleUsbConfigurationDescriptorTest
     private static SimpleUsbConfigurationDescriptor descriptor;
 
     /** Value for {@link SimpleUsbConfigurationDescriptor#bLength()}. */
-    private static final byte LENGTH = 1;
+    private static final byte LENGTH = (byte) 0xff;
 
     /** Value for {@link SimpleUsbConfigurationDescriptor#bDescriptorType()}. */
-    private static final byte DESCRIPTOR_TYPE = 2;
+    private static final byte DESCRIPTOR_TYPE = (byte) 0xfe;
 
     /** Value for {@link SimpleUsbConfigurationDescriptor#wTotalLength()}. */
-    private static final short TOTAL_LENGTH = 3;
+    private static final short TOTAL_LENGTH = (short) 0xffff;
 
     /** Value for {@link SimpleUsbConfigurationDescriptor#bNumInterfaces()}. */
-    private static final byte NUM_INTERFACES = 4;
+    private static final byte NUM_INTERFACES = (byte) 0xfc;
 
     /**
      * Value for {@link SimpleUsbConfigurationDescriptor#bConfigurationValue()}.
      */
-    private static final byte CONFIGURATION_VALUE = 5;
+    private static final byte CONFIGURATION_VALUE = (byte) 0xfb;
 
     /** Value for {@link SimpleUsbConfigurationDescriptor#iConfiguration()}. */
-    private static final byte CONFIGURATION = 6;
+    private static final byte CONFIGURATION = (byte) 0xfa;
 
     /** Value for {@link SimpleUsbConfigurationDescriptor#bmAttributes()}. */
-    private static final byte ATTRIBUTES = 7;
+    private static final byte ATTRIBUTES = (byte) 0xf9;
 
     /** Value for {@link SimpleUsbConfigurationDescriptor#bMaxPower()}. */
-    private static final byte MAX_POWER = 8;
+    private static final byte MAX_POWER = (byte) 0xf8;
 
     /** A wrong value for equality test. */
     private static final byte WRONG = 0;
@@ -150,7 +148,7 @@ public class SimpleUsbConfigurationDescriptorTest
         assertEquals(code, descriptor.hashCode());
         assertEquals(code, new SimpleUsbConfigurationDescriptor(
             LENGTH, DESCRIPTOR_TYPE, TOTAL_LENGTH, NUM_INTERFACES,
-            CONFIGURATION_VALUE, CONFIGURATION, ATTRIBUTES, 
+            CONFIGURATION_VALUE, CONFIGURATION, ATTRIBUTES,
             MAX_POWER).hashCode());
     }
 
@@ -198,50 +196,30 @@ public class SimpleUsbConfigurationDescriptorTest
     @Test
     public void testToString()
     {
-        assertEquals(descriptor.toString(), descriptor.toString());
-        assertEquals(descriptor.toString(),
-            new SimpleUsbConfigurationDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, TOTAL_LENGTH, NUM_INTERFACES,
-                CONFIGURATION_VALUE, CONFIGURATION, ATTRIBUTES, 
-                MAX_POWER).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbConfigurationDescriptor(
-                WRONG, DESCRIPTOR_TYPE, TOTAL_LENGTH, NUM_INTERFACES,
-                CONFIGURATION_VALUE, CONFIGURATION, ATTRIBUTES, MAX_POWER)
-                .toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbConfigurationDescriptor(
-                LENGTH, WRONG, TOTAL_LENGTH, NUM_INTERFACES,
-                CONFIGURATION_VALUE, CONFIGURATION, ATTRIBUTES, MAX_POWER)
-                .toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbConfigurationDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, WRONG, NUM_INTERFACES,
-                CONFIGURATION_VALUE, CONFIGURATION, ATTRIBUTES, MAX_POWER)
-                .toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbConfigurationDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, TOTAL_LENGTH, WRONG,
-                CONFIGURATION_VALUE, CONFIGURATION, ATTRIBUTES, MAX_POWER)
-                .toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbConfigurationDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, TOTAL_LENGTH, NUM_INTERFACES,
-                WRONG, CONFIGURATION, ATTRIBUTES, MAX_POWER).toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbConfigurationDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, TOTAL_LENGTH, NUM_INTERFACES,
-                CONFIGURATION_VALUE, WRONG, ATTRIBUTES, MAX_POWER)
-                .toString());
-        assertNotEquals(descriptor.toString(),
+        assertEquals(String.format("Configuration Descriptor:%n"
+            + "  bLength                255%n"
+            + "  bDescriptorType        254%n"
+            + "  wTotalLength         65535%n"
+            + "  bNumInterfaces         252%n"
+            + "  bConfigurationValue    251%n"
+            + "  iConfiguration         250%n"
+            + "  bmAttributes          0xf9%n"
+            + "    Self Powered%n"
+            + "    Remote Wakeup%n"
+            + "  bMaxPower              496mA%n"), descriptor.toString());
+        assertEquals(String.format("Configuration Descriptor:%n"
+            + "  bLength                255%n"
+            + "  bDescriptorType        254%n"
+            + "  wTotalLength         65535%n"
+            + "  bNumInterfaces         252%n"
+            + "  bConfigurationValue    251%n"
+            + "  iConfiguration         250%n"
+            + "  bmAttributes          0x00%n"
+            + "    (Bus Powered)%n"
+            + "  bMaxPower              496mA%n"),
             new SimpleUsbConfigurationDescriptor(
                 LENGTH, DESCRIPTOR_TYPE, TOTAL_LENGTH, NUM_INTERFACES,
                 CONFIGURATION_VALUE, CONFIGURATION, WRONG, MAX_POWER)
-                .toString());
-        assertNotEquals(descriptor.toString(),
-            new SimpleUsbConfigurationDescriptor(
-                LENGTH, DESCRIPTOR_TYPE, TOTAL_LENGTH, NUM_INTERFACES,
-                CONFIGURATION_VALUE, CONFIGURATION, ATTRIBUTES, WRONG)
                 .toString());
     }
 }
