@@ -130,6 +130,15 @@ public class RootHubInterfaceTest
     }
 
     /**
+     * Tests the {@link RootHubInterface#getSetting(byte)} method.
+     */
+    @Test
+    public void testGetSetting()
+    {
+        assertSame(this.iface, this.iface.getSetting((byte) 0));
+    }
+    
+    /**
      * Tests the {@link RootHubInterface#containsSetting(byte)} method.
      */
     @Test
