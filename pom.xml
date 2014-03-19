@@ -60,7 +60,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <repoBaseUrl>http://nexus.ailis.de/content/groups/public/de/ailis/${project.artifactId}/${project.artifactId}</repoBaseUrl>
+    <repoBaseUrl>http://nexus.ailis.de/content/groups/public/org/usb4java/${project.artifactId}</repoBaseUrl>
     <artifactBaseUrl>${repoBaseUrl}/${project.version}/${project.artifactId}-${project.version}</artifactBaseUrl>
   </properties>
   
