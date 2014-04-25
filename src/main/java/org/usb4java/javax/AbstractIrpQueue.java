@@ -58,7 +58,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      * @param irp
      *            The control IRP to queue.
      */
-    public final void add(final T irp)
+    public final synchronized void add(final T irp)
     {
         this.irps.add(irp);
 
@@ -92,7 +92,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
         // if present).
         if (irp == null)
         {
-            this.processor = null;
+            synchronized { this.processor = null; }
         }
         else
         {
@@ -153,7 +153,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      * aborted. This method returns as soon as no more IRPs are in the queue and
      * no more are processed.
      */
-    public final void abort()
+    public final synchronized void abort()
     {
         this.aborting = true;
         this.irps.clear();
@@ -180,7 +180,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      * 
      * @return True if queue is busy, false if not.
      */
-    public final boolean isBusy()
+    public final synchronized boolean isBusy()
     {
         return !this.irps.isEmpty() || this.processor != null;
     }
