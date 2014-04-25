@@ -92,7 +92,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
         // if present).
         if (irp == null)
         {
-            synchronized { this.processor = null; }
+            synchronized(this)  { this.processor = null; }
         }
         else
         {
