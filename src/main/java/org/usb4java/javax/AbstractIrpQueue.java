@@ -58,24 +58,26 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      * @param irp
      *            The control IRP to queue.
      */
-    public final synchronized void add(final T irp)
+    public final void add(final T irp)
     {
         this.irps.add(irp);
 
         // Start the queue processor if not already running.
         if (this.processor == null)
         {
-            this.processor = new Thread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    process();
+            synchronized(this) {
+                if (this.processor == null) {
+                    this.processor = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            process();
+                        }
+                    });
+                    this.processor.setDaemon(true);
+                    this.processor.setName("usb4java IRP Queue Processor");
+                    this.processor.start();
                 }
-            });
-            this.processor.setDaemon(true);
-            this.processor.setName("usb4java IRP Queue Processor");
-            this.processor.start();
+            }
         }
     }
 
