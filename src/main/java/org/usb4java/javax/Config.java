@@ -6,6 +6,7 @@
 package org.usb4java.javax;
 
 import java.util.Properties;
+import java.util.concurrent.*;
 
 /**
  * Configuration.
@@ -29,11 +30,24 @@ final class Config
     /** Key name for USB communication timeout. */
     private static final String SCAN_INTERVAL_KEY = KEY_BASE + "scanInterval";
 
+    /** Key name for USB IRP executor. */
+    private static final String EXECUTOR_SERVICE_KEY = KEY_BASE + "irpExecutorService";
+
     /** The timeout for USB communication in milliseconds. */
     private int timeout = DEFAULT_TIMEOUT;
     
     /** The scan interval in milliseconds. */
     private int scanInterval = DEFAULT_SCAN_INTERVAL;
+
+    /** The executor service factory. */
+    private ExecutorServiceProvider executorService = new ExecutorServiceProvider() {
+        public ExecutorService newExecutorService() {
+            //return Executors.newSingleThreadExecutor();
+            return (new ThreadPoolExecutor(0, 1,
+                    3L, TimeUnit.SECONDS,
+                    new LinkedBlockingQueue<Runnable>()));
+        }
+    };
 
     /**
      * Constructs new configuration from the specified properties.
@@ -54,6 +68,22 @@ final class Config
         {
             this.scanInterval = Integer.valueOf(properties.getProperty(
                 SCAN_INTERVAL_KEY));
+        }
+
+        // Read the irp executor class
+        if (properties.containsKey(EXECUTOR_SERVICE_KEY))
+        {
+            try {
+                Class<?> cls = getClass().getClassLoader().loadClass(properties.getProperty(
+                        EXECUTOR_SERVICE_KEY));
+                this.executorService = (ExecutorServiceProvider)cls.newInstance();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -76,4 +106,10 @@ final class Config
     {
         return this.scanInterval;
     }
+
+    /**
+     * Creates a new non-parallel execution service. Defaults to single thread exec
+     * @return new non-parallel ExecutorService
+     */
+    public ExecutorService newExecutorService() { return this.executorService.newExecutorService(); }
 }
