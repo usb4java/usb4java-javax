@@ -40,9 +40,11 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
     /** The USB device. */
     private final AbstractDevice device;
 
+    /** The non-parallel ExecutorService we will use for this queue on this device. */
     private final ExecutorService singleThreadExecutor;
 
-    private final AtomicInteger jobCounter = new AtomicInteger(0);
+    /** The job counter for active jobs in this queue. */
+    private final AtomicInteger activeJobs = new AtomicInteger(0);
 
     /**
      * Constructor.
@@ -67,23 +69,26 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      */
     public final void add(final T irp)
     {
-        jobCounter.incrementAndGet();
         singleThreadExecutor.execute(new Runnable() {
             final T irp0 = irp;
 
             @Override
             public void run() {
-                jobCounter.decrementAndGet();
+                activeJobs.incrementAndGet();
 
-                if (!aborting) {
-                    try {
-                        processIrp(irp0);
-                    } catch (final UsbException e) {
-                        irp0.setUsbException(e);
+                try {
+                    if (!aborting) {
+                        try {
+                            processIrp(irp0);
+                        } catch (final UsbException e) {
+                            irp0.setUsbException(e);
+                        }
+
+                        irp0.complete();
+                        finishIrp(irp0);
                     }
-
-                    irp0.complete();
-                    finishIrp(irp0);
+                } finally {
+                    activeJobs.decrementAndGet();
                 }
             }
         });
@@ -135,7 +140,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      */
     public final synchronized boolean isBusy()
     {
-        return jobCounter.get() > 0;
+        return activeJobs.get() > 0;
     }
 
     /**
