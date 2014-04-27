@@ -42,7 +42,7 @@ final class Config
     /** The executor service factory. */
     private ExecutorServiceProvider executorService = new ExecutorServiceProvider() {
         public ExecutorService newExecutorService() {
-            //return Executors.newSingleThreadExecutor();
+            /* The default executor is a pool of max 1 thread, with 3s timeout. */
             return (new ThreadPoolExecutor(0, 1,
                     3L, TimeUnit.SECONDS,
                     new LinkedBlockingQueue<Runnable>()));
