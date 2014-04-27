@@ -70,20 +70,21 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
         jobCounter.incrementAndGet();
         singleThreadExecutor.execute(new Runnable() {
             final T irp0 = irp;
+
             @Override
             public void run() {
-                try
-                {
-                    processIrp(irp0);
-                }
-                catch (final UsbException e)
-                {
-                    irp0.setUsbException(e);
-                }
-
-                irp0.complete();
-                finishIrp(irp0);
                 jobCounter.decrementAndGet();
+
+                if (!aborting) {
+                    try {
+                        processIrp(irp0);
+                    } catch (final UsbException e) {
+                        irp0.setUsbException(e);
+                    }
+
+                    irp0.complete();
+                    finishIrp(irp0);
+                }
             }
         });
     }
