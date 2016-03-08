@@ -462,7 +462,7 @@ abstract class AbstractDevice implements UsbDevice
             if (result < 0)
             {
                 throw ExceptionUtils.createPlatformException(
-                    "Uanble to re-attach kernel driver", result);
+                    "Unable to re-attach kernel driver", result);
             }
         }
 
