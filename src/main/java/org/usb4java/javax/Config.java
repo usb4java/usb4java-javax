@@ -6,6 +6,8 @@
 package org.usb4java.javax;
 
 import java.util.Properties;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Configuration.
@@ -29,11 +31,53 @@ final class Config
     /** Key name for USB communication timeout. */
     private static final String SCAN_INTERVAL_KEY = KEY_BASE + "scanInterval";
 
+    /** Key name for USB IRP executor. */
+    private static final String EXECUTOR_SERVICE_KEY = KEY_BASE + "irpExecutorService";
+
     /** The timeout for USB communication in milliseconds. */
     private int timeout = DEFAULT_TIMEOUT;
     
     /** The scan interval in milliseconds. */
     private int scanInterval = DEFAULT_SCAN_INTERVAL;
+
+    /** The executor service factory. */
+    private ExecutorServiceProvider executorService = new ExecutorServiceProvider() {
+        private final AtomicInteger poolNumber = new AtomicInteger(1);
+
+        class LocalThreadFactory extends Object implements ThreadFactory {
+            private final ThreadGroup group;
+            private final AtomicInteger threadNumber = new AtomicInteger(1);
+            private final String namePrefix;
+
+            LocalThreadFactory() {
+                SecurityManager s = System.getSecurityManager();
+                group = (s != null) ? s.getThreadGroup() :
+                        Thread.currentThread().getThreadGroup();
+                namePrefix = "usb4java-irp-" +
+                        poolNumber.getAndIncrement() +
+                        "-thread-";
+            }
+
+            public Thread newThread(Runnable r) {
+                Thread t = new Thread(group, r,
+                        namePrefix + threadNumber.getAndIncrement(),
+                        0);
+                t.setDaemon(true);
+                if (t.getPriority() != Thread.MAX_PRIORITY)
+                    t.setPriority(Thread.MAX_PRIORITY);
+                return t;
+            }
+        }
+
+        public ExecutorService newExecutorService() {
+            /* The default executor is a pool of max 1 thread, with 3s timeout. */
+            ThreadPoolExecutor es = new ThreadPoolExecutor(0, 1,
+                    3L, TimeUnit.SECONDS,
+                    new LinkedBlockingQueue<Runnable>());
+            es.setThreadFactory(new LocalThreadFactory());
+            return es;
+        }
+    };
 
     /**
      * Constructs new configuration from the specified properties.
@@ -54,6 +98,22 @@ final class Config
         {
             this.scanInterval = Integer.valueOf(properties.getProperty(
                 SCAN_INTERVAL_KEY));
+        }
+
+        // Read the irp executor class
+        if (properties.containsKey(EXECUTOR_SERVICE_KEY))
+        {
+            try {
+                Class<?> cls = getClass().getClassLoader().loadClass(properties.getProperty(
+                        EXECUTOR_SERVICE_KEY));
+                this.executorService = (ExecutorServiceProvider)cls.newInstance();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -76,4 +136,10 @@ final class Config
     {
         return this.scanInterval;
     }
+
+    /**
+     * Creates a new non-parallel execution service. Defaults to single thread exec
+     * @return new non-parallel ExecutorService
+     */
+    public ExecutorService newExecutorService() { return this.executorService.newExecutorService(); }
 }
