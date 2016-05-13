@@ -14,7 +14,7 @@ import org.usb4java.Device;
  * 
  * @author Klaus Reimer (k@ailis.de)
  */
-class NonHub extends AbstractDevice
+public class NonHub extends AbstractDevice
 {
     /**
      * Constructs a new non-hub USB device.

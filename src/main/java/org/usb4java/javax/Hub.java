@@ -17,7 +17,7 @@ import org.usb4java.Device;
  * 
  * @author Klaus Reimer (k@ailis.de)
  */
-final class Hub extends AbstractDevice implements UsbHub,
+public final class Hub extends AbstractDevice implements UsbHub,
     UsbPorts<Port, AbstractDevice>
 {
     /** The hub ports. */
