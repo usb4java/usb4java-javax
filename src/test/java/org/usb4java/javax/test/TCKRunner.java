@@ -30,27 +30,34 @@ public class TCKRunner extends JUnit38ClassRunner
     public TCKRunner(final Class<?> testClass) throws NoTestsRemainException
     {
         super(testClass);
-        filter(new Filter()
+        try 
         {
-            @Override
-            public boolean shouldRun(Description description)
-            {
-                try
-                {
-                    UsbAssume.assumeTckTestsEnabled();
-                    return true;
-                }
-                catch (AssumptionViolatedException e)
-                {
-                    return false;
-                }
-            }
+	        filter(new Filter()
+	        {
+	            @Override
+	            public boolean shouldRun(Description description)
+	            {
+	                try
+	                {
+	                    UsbAssume.assumeTckTestsEnabled();
+	                    return true;
+	                }
+	                catch (AssumptionViolatedException e)
+	                {
+	                    return false;
+	                }
+	            }
 
-            @Override
-            public String describe()
-            {
-                return "TCK tests only when enabled";
-            }
-        });
+	            @Override
+	            public String describe()
+	            {
+	                return "TCK tests only when enabled";
+	            }
+	        });
+        }
+        catch (NoTestsRemainException e)
+        {
+            // This is expected when we filter out the whole test class
+        }
     }
 }
