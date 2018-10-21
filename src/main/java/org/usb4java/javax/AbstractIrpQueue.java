@@ -65,17 +65,19 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
         // Start the queue processor if not already running.
         if (this.processor == null)
         {
-            this.processor = new Thread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    process();
+            synchronized(this) {
+                if (this.processor == null) {
+                    this.processor = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            process();
+                        }
+                    });
+                    this.processor.setDaemon(true);
+                    this.processor.setName("usb4java IRP Queue Processor");
+                    this.processor.start();
                 }
-            });
-            this.processor.setDaemon(true);
-            this.processor.setName("usb4java IRP Queue Processor");
-            this.processor.start();
+            }
         }
     }
 
@@ -92,7 +94,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
         // if present).
         if (irp == null)
         {
-            this.processor = null;
+            synchronized(this) { this.processor = null; }
         }
         else
         {
@@ -111,7 +113,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
                 // Get next IRP and mark the thread as closing before sending
                 // the events for the previous IRP
                 final T nextIrp = this.irps.poll();
-                if (nextIrp == null) this.processor = null;
+                if (nextIrp == null) synchronized(this) { this.processor = null; }
     
                 // Finish the previous IRP
                 irp.complete();
@@ -153,7 +155,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      * aborted. This method returns as soon as no more IRPs are in the queue and
      * no more are processed.
      */
-    public final void abort()
+    public final synchronized void abort()
     {
         this.aborting = true;
         this.irps.clear();
@@ -180,7 +182,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      * 
      * @return True if queue is busy, false if not.
      */
-    public final boolean isBusy()
+    public final synchronized boolean isBusy()
     {
         return !this.irps.isEmpty() || this.processor != null;
     }
