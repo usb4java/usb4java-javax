@@ -6,7 +6,7 @@
   <artifactId>usb4java-javax</artifactId>
   <packaging>jar</packaging>
   <name>usb4java-javax</name>
-  <version>1.3.0</version>
+  <version>1.3.1-SNAPSHOT</version>
   <url>http://usb4java.org/usb4java-javax/</url>
   <description>
     Extension for usb4java which implements javax.usb (JSR-80).
@@ -66,7 +66,7 @@
     <connection>scm:git:git://github.com/usb4java/${project.artifactId}.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/usb4java/${project.artifactId}.git</developerConnection>
     <url>http://github.com/usb4java/${project.artifactId}</url>
-    <tag>usb4java-javax-1.3.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
