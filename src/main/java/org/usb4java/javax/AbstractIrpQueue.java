@@ -31,7 +31,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
     private final Queue<T> irps = new ConcurrentLinkedQueue<T>();
 
     /** The queue processor thread. */
-    private volatile Thread processor;
+    private volatile Thread processor=null;
     
     /** If queue is currently aborting. */
     private volatile boolean aborting;
@@ -70,7 +70,17 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
                 @Override
                 public void run()
                 {
-                    process();
+                	while(processor != null){
+	                	if(!irps.isEmpty())
+	                		process();
+						else
+							try {
+								Thread.sleep(0,1);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+                	}
                 }
             });
             this.processor.setDaemon(true);
@@ -82,7 +92,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
     /**
      * Processes the queue. Methods returns when the queue is empty.
      */
-    final void process()
+    void process()
     {
         // Get the next IRP
         T irp = this.irps.poll();
@@ -90,11 +100,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
         // If there are no IRPs to process then mark the thread as closing
         // right away. Otherwise process the IRP (and more IRPs from the queue
         // if present).
-        if (irp == null)
-        {
-            this.processor = null;
-        }
-        else
+        if (irp != null)
         {
             while (irp != null)
             {
@@ -111,7 +117,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
                 // Get next IRP and mark the thread as closing before sending
                 // the events for the previous IRP
                 final T nextIrp = this.irps.poll();
-                if (nextIrp == null) this.processor = null;
+                //if (nextIrp == null) this.processor = null;
     
                 // Finish the previous IRP
                 irp.complete();
@@ -157,6 +163,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
     {
         this.aborting = true;
         this.irps.clear();
+        processor=null;
         while (isBusy())
         {
             try
@@ -182,7 +189,7 @@ abstract class AbstractIrpQueue<T extends UsbIrp>
      */
     public final boolean isBusy()
     {
-        return !this.irps.isEmpty() || this.processor != null;
+        return !this.irps.isEmpty() ;
     }
 
     /**
