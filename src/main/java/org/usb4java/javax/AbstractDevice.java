@@ -38,7 +38,7 @@ import org.usb4java.javax.descriptors.SimpleUsbStringDescriptor;
 
 /**
  * A Usb device.
- * 
+ *
  * @author Klaus Reimer (k@ailis.de)
  */
 abstract class AbstractDevice implements UsbDevice
@@ -86,7 +86,7 @@ abstract class AbstractDevice implements UsbDevice
 
     /**
      * Constructs a new device.
-     * 
+     *
      * @param manager
      *            The USB device manager which is responsible for this device.
      * @param id
@@ -128,7 +128,7 @@ abstract class AbstractDevice implements UsbDevice
             if (result < 0)
             {
                 throw ExceptionUtils.createPlatformException(
-                    "Unable to get configuation " + i + " for device " + id,
+                    "Unable to get configuration " + i + " for device " + id,
                     result);
             }
             try
@@ -150,11 +150,11 @@ abstract class AbstractDevice implements UsbDevice
         final ConfigDescriptor configDescriptor = new ConfigDescriptor();
         final int result =
             LibUsb.getActiveConfigDescriptor(device, configDescriptor);
-        
+
         // ERROR_NOT_FOUND is returned when device is in unconfigured state.
         // On OSX it may return INVALID_PARAM in this case because of a bug
         // in libusb
-        if (result == LibUsb.ERROR_NOT_FOUND || 
+        if (result == LibUsb.ERROR_NOT_FOUND ||
             result == LibUsb.ERROR_INVALID_PARAM)
         {
             this.activeConfigurationNumber = 0;
@@ -167,7 +167,7 @@ abstract class AbstractDevice implements UsbDevice
         }
         else
         {
-            this.activeConfigurationNumber = 
+            this.activeConfigurationNumber =
                 configDescriptor.bConfigurationValue();
             LibUsb.freeConfigDescriptor(configDescriptor);
         }
@@ -175,7 +175,7 @@ abstract class AbstractDevice implements UsbDevice
 
     /**
      * Returns the device id.
-     * 
+     *
      * @return The device id.
      */
     public final DeviceId getId()
@@ -185,7 +185,7 @@ abstract class AbstractDevice implements UsbDevice
 
     /**
      * Returns the parent device id.
-     * 
+     *
      * @return The parent device id or null of there is no parent.
      */
     public final DeviceId getParentId()
@@ -195,7 +195,7 @@ abstract class AbstractDevice implements UsbDevice
 
     /**
      * Ensures the device is connected.
-     * 
+     *
      * @throws UsbDisconnectedException
      *             When device is disconnected.
      */
@@ -207,7 +207,7 @@ abstract class AbstractDevice implements UsbDevice
     /**
      * Opens the USB device and returns the USB device handle. If device was
      * already open then the old handle is returned.
-     * 
+     *
      * @return The USB device handle.
      * @throws UsbException
      *             When USB device could not be opened.
@@ -258,7 +258,7 @@ abstract class AbstractDevice implements UsbDevice
     /**
      * Sets the parent USB port. If port is unset then a usbDeviceDetached event
      * is send.
-     * 
+     *
      * @param port
      *            The port to set. Null to unset.
      */
@@ -364,7 +364,7 @@ abstract class AbstractDevice implements UsbDevice
 
     /**
      * Sets the active USB configuration.
-     * 
+     *
      * @param number
      *            The number of the USB configuration to activate.
      * @throws UsbException
@@ -389,7 +389,7 @@ abstract class AbstractDevice implements UsbDevice
 
     /**
      * Claims the specified interface.
-     * 
+     *
      * @param number
      *            The number of the interface to claim.
      * @param force
@@ -435,7 +435,7 @@ abstract class AbstractDevice implements UsbDevice
 
     /**
      * Releases a claimed interface.
-     * 
+     *
      * @param number
      *            The number of the interface to release.
      * @throws UsbException
@@ -471,7 +471,7 @@ abstract class AbstractDevice implements UsbDevice
 
     /**
      * Checks if the specified interface is claimed.
-     * 
+     *
      * @param number
      *            The number of the interface to check.
      * @return True if interface is claimed, false if not.
@@ -528,7 +528,7 @@ abstract class AbstractDevice implements UsbDevice
 
     /**
      * Returns the languages the specified device supports.
-     * 
+     *
      * @return Array with supported language codes. Never null. May be empty.
      * @throws UsbException
      *             When string descriptor languages could not be read.
@@ -605,7 +605,7 @@ abstract class AbstractDevice implements UsbDevice
     }
 
     @Override
-    public final UsbControlIrp createUsbControlIrp(final byte bmRequestType, 
+    public final UsbControlIrp createUsbControlIrp(final byte bmRequestType,
         final byte bRequest, final short wValue, final short wIndex)
     {
         return new DefaultUsbControlIrp(bmRequestType, bRequest, wValue,
@@ -623,7 +623,7 @@ abstract class AbstractDevice implements UsbDevice
     {
         this.listeners.remove(listener);
     }
-    
+
     @Override
     public final String toString()
     {

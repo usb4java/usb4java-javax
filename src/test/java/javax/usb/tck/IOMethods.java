@@ -47,7 +47,7 @@ public class IOMethods
             Assert.assertTrue("usbInterface.isClaimed() returns false after interface is claimed.", usbInterface.isClaimed());
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            Assert.fail ("A connected device should't throw the UsbDisconnectedException!");  // @P1A
+            Assert.fail ("A connected device shouldn't throw the UsbDisconnectedException!");  // @P1A
         } catch ( Exception e )                                                               // @P1C
         {
             Assert.fail("Exception claiming interface.  " + e.toString());
@@ -63,7 +63,7 @@ public class IOMethods
             Assert.assertFalse("usbInterface.isClaimed() returns true after interface is released.", usbInterface.isClaimed());
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            Assert.fail ("A connected device should't throw the UsbDisconnectedException!");  // @P1A
+            Assert.fail ("A connected device shouldn't throw the UsbDisconnectedException!");  // @P1A
         } catch ( Exception e )                                                               // @P1A
         {
             Assert.fail("Exception releasing interface.  " + e.toString());
@@ -82,7 +82,7 @@ public class IOMethods
             Assert.assertTrue("usbPipe.isOpen() returns false after pipe is opened.", usbPipe.isOpen());
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            Assert.fail ("A connected device should't throw the UsbDisconnectedException!");  // @P1A
+            Assert.fail ("A connected device shouldn't throw the UsbDisconnectedException!");  // @P1A
         } catch ( Exception e )                                                               // @P1A
         {
             Assert.fail("Exception opening pipe.  " + e.toString());
@@ -98,7 +98,7 @@ public class IOMethods
             Assert.assertFalse("usbPipe.isOpen() returns true after pipe is closed.", usbPipe.isOpen());
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            Assert.fail ("A connected device should't throw the UsbDisconnectedException!");  // @P1A
+            Assert.fail ("A connected device shouldn't throw the UsbDisconnectedException!");  // @P1A
         } catch ( Exception e )                                                               // @P1C
         {
             Assert.fail("Exception closing pipe.  " + e.toString());
@@ -182,7 +182,7 @@ public class IOMethods
                 if ( debug )
                     System.out.println("Active ConfigurationNumber: " + usbDevice.getActiveUsbConfigurationNumber() );
                                                                                               // @P2D6
-                //get UsbConfiguraion
+                //get UsbConfiguration
                 UsbConfiguration usbConfiguration = usbDevice.getActiveUsbConfiguration();
 
                 //getUsbInterface
@@ -287,7 +287,7 @@ public class IOMethods
     {
         Assert.assertNotNull("IN pipe should not be null.", inPipe);
         Assert.assertNotNull("OUT pipe should not be null.",outPipe);
-        Assert.assertTrue("These pipes are not from matchine endpoint pairs.",
+        Assert.assertTrue("These pipes are not from machine endpoint pairs.",
                           ((inPipe.getUsbEndpoint().getUsbEndpointDescriptor().bEndpointAddress()) - UsbConst.ENDPOINT_DIRECTION_MASK)
                           == (outPipe.getUsbEndpoint().getUsbEndpointDescriptor().bEndpointAddress()));
         Assert.assertEquals("The IN pipe does not have the correct maxPacketSize.",

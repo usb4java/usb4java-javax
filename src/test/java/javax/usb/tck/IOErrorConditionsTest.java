@@ -91,7 +91,7 @@ public class IOErrorConditionsTest extends TestCase
             }                                                                                 // @P1C
         } catch ( UsbDisconnectedException uDE )                                              // @P1A
         {                                                                                     // @P1A
-            fail ("A connected device should't throw the UsbDisconnectedException!");         // @P1A
+            fail ("A connected device shouldn't throw the UsbDisconnectedException!");         // @P1A
         }                                                                                     // @P1A
 
         super.tearDown();
@@ -298,7 +298,7 @@ public class IOErrorConditionsTest extends TestCase
                 fail("UsbClaimException expected.  unexpected UsbException!" + ue);
             } catch ( UsbDisconnectedException uDE )                                          // @P1C
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             } catch ( Exception e )                                                           // @P1C
             {
                 fail("UsbClaimException expected.  unexpected Exception" + e);
@@ -378,7 +378,7 @@ public class IOErrorConditionsTest extends TestCase
             assertTrue("output pipe is not active!!!", outPipe.isActive());
             IOMethods.openPipe(outPipe);
 
-            //submit null byte array 
+            //submit null byte array
             byte [] nullBuffer = null;
             try
             {
@@ -392,7 +392,7 @@ public class IOErrorConditionsTest extends TestCase
                 fail("java.lang.IllegalArgumentException was expected.  Unexpected UsbException on submitting null buffer:" + uE);
             } catch ( UsbDisconnectedException uDE )                                          // @P1C
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             } catch ( Exception e )                                                           // @P1C
             {
                 fail("java.lang.IllegalArgumentException was expected.  Unexpected generic exception." + e);
@@ -439,11 +439,11 @@ public class IOErrorConditionsTest extends TestCase
             assertTrue("output pipe is not active!!!", outPipe.isActive());
             IOMethods.openPipe(outPipe);
 
-            //submit null byte array 
+            //submit null byte array
             byte [] nullBuffer = null;
 
 
-            //submit IRP with null data 
+            //submit IRP with null data
 
             usbIrp = outPipe.createUsbIrp();
 
@@ -458,10 +458,10 @@ public class IOErrorConditionsTest extends TestCase
                 usbe = true;
             } catch ( UsbException uE )
             {
-                fail("java.lang.IllegalArgumentException was expected.  Unexpected UsbException on settin null data in IRP:" + uE);
+                fail("java.lang.IllegalArgumentException was expected.  Unexpected UsbException on setting null data in IRP:" + uE);
             } catch ( UsbDisconnectedException uDE )                                          // @P1C
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             } catch ( Exception e )                                                           // @P1C
             {
                 fail("java.lang.IllegalArgumentException was expected.  Unexpected generic exception." + e);
@@ -507,13 +507,13 @@ public class IOErrorConditionsTest extends TestCase
             {
                 outPipe.abortAllSubmissions();  // should throw UsbNotOpenException
                 assertFalse("Pipe should have been closed at this part of the test.", outPipe.isOpen());
-                fail("abortAllSumissions should have thrown a UsbNotOpenException when called on a closed pipe.");
+                fail("abortAllSubmissions should have thrown a UsbNotOpenException when called on a closed pipe.");
             } catch ( UsbNotOpenException ue )
             {
                 usbe = true;
             } catch ( UsbDisconnectedException uDE )                                          // @P1C
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             } catch ( Exception e )                                                           // @P1C
             {
                 fail ("UsbNotOpenException was expected.  Unexpected exception:  " + e);
@@ -522,7 +522,7 @@ public class IOErrorConditionsTest extends TestCase
 
 
             if ( !usbe )
-                assertTrue("Test Action Agains Close Pipe abortAllSubmission() did not throw UsbNotOpenException!", false);
+                assertTrue("Test Action Against Close Pipe abortAllSubmission() did not throw UsbNotOpenException!", false);
 
         }
 
@@ -568,16 +568,16 @@ public class IOErrorConditionsTest extends TestCase
                 usbe = true;
             } catch ( UsbDisconnectedException uDE )                                          // @P1C
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             } catch ( Exception e )                                                           // @P1A
-            
+
             {
                 fail ("UsbNotOpenException was expected.  Unexpected exception:  " + e);
             }
 
 
             if ( !usbe )
-                assertTrue("Test Action Agains Close Pipe Submit did not throw UsbNotOpenException!", false);
+                assertTrue("Test Action Against Close Pipe Submit did not throw UsbNotOpenException!", false);
 
         }
 
@@ -644,7 +644,7 @@ public class IOErrorConditionsTest extends TestCase
 
             } catch ( UsbDisconnectedException uDE )                                          // @P1C
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             } catch ( Exception e )                                                           // @P1C
             {
                 fail("Unexpected Exception:  " + e);
@@ -710,7 +710,7 @@ public class IOErrorConditionsTest extends TestCase
                     fail("UsbNotActiveException was expected.  Unexpected UsbException: " + ue);
                 } catch ( UsbDisconnectedException uDE )                                      // @P1C
                 {                                                                             // @P1A
-                    fail ("A connected device should't throw the UsbDisconnectedException!"); // @P1A
+                    fail ("A connected device shouldn't throw the UsbDisconnectedException!"); // @P1A
                 } catch ( Exception e )                                                       // @P1C
                 {
                     fail("UsbNotActiveException was expected.  Unexpected Exception: " + e);
@@ -755,13 +755,13 @@ public class IOErrorConditionsTest extends TestCase
                 inEndpoint.getUsbInterface().release();
             } catch ( UsbClaimException ue )
             {
-                fail("The interface should have been durring getEndpointOfType method call!"); 
+                fail("The interface should have been during getEndpointOfType method call!");
             } catch ( UsbException ue )
             {
                 fail("Unexpected exception: " + ue);
             } catch ( UsbDisconnectedException uDE )                                          // @P1C
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             }                                                                                 // @P1A
 
             if ( myIface.isActive() )
@@ -784,7 +784,7 @@ public class IOErrorConditionsTest extends TestCase
                     fail("UsbNotClaimedException was expected.  Unexpected UsbException: " + ue);
                 } catch ( UsbDisconnectedException uDE )                                      // @P1C
                 {                                                                             // @P1A
-                    fail ("A connected device should't throw the UsbDisconnectedException!"); // @P1A
+                    fail ("A connected device shouldn't throw the UsbDisconnectedException!"); // @P1A
                 } catch ( Exception e )                                                       // @P1A
                 {
                     fail("UsbNotClaimedException was expected.  Unexpected Exception: " + e);
@@ -945,7 +945,7 @@ public class IOErrorConditionsTest extends TestCase
     private UsbDevice usbDevice = null;
 
     /*
-     * make myIface global so that the interface can be 
+     * make myIface global so that the interface can be
      * released in case of errors in a previous test
      */
     private UsbInterface myIface = null;
@@ -953,11 +953,11 @@ public class IOErrorConditionsTest extends TestCase
 
 
     /*
-     * Make inPipe and outPipe global so that pipes can 
+     * Make inPipe and outPipe global so that pipes can
      * be closed in case of errors in a previous test
      */
     private UsbPipe inPipe = null;
-    private UsbPipe outPipe = null; 
+    private UsbPipe outPipe = null;
 
     private int testType = 99;
     private int isochronousTest = UsbConst.ENDPOINT_TYPE_ISOCHRONOUS;

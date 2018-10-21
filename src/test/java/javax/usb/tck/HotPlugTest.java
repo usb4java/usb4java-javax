@@ -36,7 +36,7 @@ import junit.framework.TestCase;
 /**
  * Hot Plug Test
  * <p>
- * This test verifies that devices can be attached and detached at runtime 
+ * This test verifies that devices can be attached and detached at runtime
  * (hot plugging) and checks that proper UsbServices events are generated.
  * @author Charles Jaeger
  */
@@ -53,7 +53,7 @@ public class HotPlugTest extends TestCase
      * DeviceListener.DetachedEvent - device is offlined
      * ServiceListener.DetachedEvent - service is offlined
      * ServiceListener.AttachedEvent - service is online
-     * 
+     *
      * Assumed device under test is a Cypress board with the BulkInt
      * image running.
      */
@@ -127,7 +127,7 @@ public class HotPlugTest extends TestCase
     }
 
     /**
-     * Tests that the setUp() passes all assertions. 
+     * Tests that the setUp() passes all assertions.
      */
     public void testSetUp()
     {
@@ -237,7 +237,7 @@ public class HotPlugTest extends TestCase
     /**
      * Verify that proper exceptions are thrown (w/o failure) for all other IO
      * calls to a disconnected device
-     * 
+     *
      * TODO This test required a pretty good timing between the test device and
      * the host. Sometimes it works, sometimes it doesn't. So I disabled it for
      * now.
@@ -598,8 +598,8 @@ public class HotPlugTest extends TestCase
     }
 
     /**
-     * Generates an IRP that will cause the IllegalArgumentException 
-     * on syncSubmit to the Cypress board 
+     * Generates an IRP that will cause the IllegalArgumentException
+     * on syncSubmit to the Cypress board
      * @return the UsbControlIrp ready for use
     private UsbControlIrp getBadIrp() {
         UsbControlIrp badIrp = getRenumerateIrp();
@@ -647,7 +647,7 @@ public class HotPlugTest extends TestCase
             usbDevice.syncSubmit(usbControlIrp);
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            fail ("A connected device should't throw the UsbDisconnectedException!");         // @P1A
+            fail ("A connected device shouldn't throw the UsbDisconnectedException!");         // @P1A
         } catch ( UsbException e )                                                            // @P1A
         {
             e.printStackTrace();
@@ -866,7 +866,7 @@ public class HotPlugTest extends TestCase
                 fail("UsbClaimException: " + uce);
             } catch ( UsbDisconnectedException uDE )                                          // @P1A
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             } catch ( UsbException ue )
             {
                 fail("UsbException: " + ue);
@@ -918,7 +918,7 @@ public class HotPlugTest extends TestCase
                 fail("UsbClaimException: " + uce);
             } catch ( UsbDisconnectedException uDE )                                          // @P1C
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             } catch ( UsbException ue )
             {
                 fail("UsbException: " + ue);
@@ -929,8 +929,8 @@ public class HotPlugTest extends TestCase
         }
 
         /**
-         * Performs bulk data transfer for 10 datum.  
-         * @exception 
+         * Performs bulk data transfer for 10 datum.
+         * @exception
          */
         public void sendData() throws Exception {
             for ( int tries = 0; tries < 10; tries++ )
@@ -948,7 +948,7 @@ public class HotPlugTest extends TestCase
         }
 
         /**
-         * Will throw an exception if a buffer it sends is different than the one it receives. 
+         * Will throw an exception if a buffer it sends is different than the one it receives.
          */
         private void sendDatum() throws Exception {
             byte txType = TRANSFORM_TYPE_PASSTHROUGH;
@@ -962,7 +962,7 @@ public class HotPlugTest extends TestCase
                 inPipe.syncSubmit(inData);                                                    // @P1C
             } catch ( UsbDisconnectedException uDE )                                          // @P1C
             {                                                                                 // @P1A
-                fail ("A connected device should't throw the UsbDisconnectedException!");     // @P1A
+                fail ("A connected device shouldn't throw the UsbDisconnectedException!");     // @P1A
             }                                                                                 // @P1A
 
             if ( txBuffer.compareBuffers(inData) )
@@ -981,7 +981,7 @@ public class HotPlugTest extends TestCase
             }
         }
 
-        /** 
+        /**
          *  find endpoint that match the requirement
          * @param totalEndpoints The List of End Points
          * @param inDirection The direction ( 81 = in, 00 = out)

@@ -26,7 +26,7 @@ import org.mockito.Mockito;
 
 /**
  * Tests the {@link RootHubInterface} class.
- * 
+ *
  * @author Klaus Reimer (k@ailis.de)
  */
 public class RootHubInterfaceTest
@@ -49,7 +49,7 @@ public class RootHubInterfaceTest
 
     /**
      * Tests the {@link RootHubInterface#claim()} method.
-     * 
+     *
      * @throws UsbException
      *             Excepted exception.
      */
@@ -62,7 +62,7 @@ public class RootHubInterfaceTest
     /**
      * Tests the {@link RootHubInterface#claim(javax.usb.UsbInterfacePolicy)}
      * method.
-     * 
+     *
      * @throws UsbException
      *             Excepted exception.
      */
@@ -74,12 +74,12 @@ public class RootHubInterfaceTest
 
     /**
      * Tests the {@link RootHubInterface#release()} method.
-     * 
+     *
      * @throws UsbException
      *             Excepted exception.
      */
     @Test(expected = UsbException.class)
-    public void testRelese() throws UsbException
+    public void testRelease() throws UsbException
     {
         this.iface.release();
     }
@@ -137,7 +137,7 @@ public class RootHubInterfaceTest
     {
         assertSame(this.iface, this.iface.getSetting((byte) 0));
     }
-    
+
     /**
      * Tests the {@link RootHubInterface#containsSetting(byte)} method.
      */

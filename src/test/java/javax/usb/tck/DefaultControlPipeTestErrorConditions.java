@@ -135,8 +135,8 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
                                             INIrpExpectedException,
                                             bTransformType );
             }
-        } 
-        usbDevice.removeUsbDeviceListener(deviceListener);                   
+        }
+        usbDevice.removeUsbDeviceListener(deviceListener);
     };
 
     // TODO No idea how to detect a STALL condition in libusb 0.1
@@ -192,7 +192,7 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
                                          expectedData );
             }
         }
-        usbDevice.removeUsbDeviceListener(deviceListener); 
+        usbDevice.removeUsbDeviceListener(deviceListener);
     };
 
     public void testNotCallingsetDataForIRP()
@@ -253,7 +253,7 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
                                          expectedData );
             }
         }
-        usbDevice.removeUsbDeviceListener(deviceListener);  
+        usbDevice.removeUsbDeviceListener(deviceListener);
     };
 
     /**
@@ -305,7 +305,7 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
             VerifyIrpMethods.printDebug("RoundTripTestPossibleErrors -- ASYNC");
         }
 
-        byte[] expectedData = null;     
+        byte[] expectedData = null;
         Exception caughtException = null;
         UsbDeviceEvent LastUsbDeviceEvent = null;
 
@@ -363,10 +363,10 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
                                                        OUTbmRequestType,
                                                        OUTbRequest,
                                                        OUTwValue,
-                                                       OUTwIndex);              
+                                                       OUTwIndex);
         /*
          * For syncSubmit, all exceptions should be thrown on submit and should equal expected exception.
-         * For asyncSubmit, exceptions might not be thrown on submit so they will only be checked against 
+         * For asyncSubmit, exceptions might not be thrown on submit so they will only be checked against
          * expected exception if one was actually thrown.
          */
         if ( (SyncOrAsync == SYNC_SUBMIT) && (OUTIrpExpectedException != null) )
@@ -415,7 +415,7 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
                 System.out.println("LastUsbDeviceEvent is " + LastUsbDeviceEvent);
             }
 
-            //You can either have expected data or an expected exception; not both 
+            //You can either have expected data or an expected exception; not both
             if ( INIrpExpectedException == null )
             {
                 expectedData = transmitBuffer.getInBuffer();
@@ -441,7 +441,7 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
                                                            INwIndex);
             /*
              * For syncSubmit, all exceptions should be thrown on submit and should equal expected exception.
-             * For asyncSubmit, exceptions might not be thrown on submit so they will only be checked against 
+             * For asyncSubmit, exceptions might not be thrown on submit so they will only be checked against
              * expected exception if one was actually thrown.
              */
             if ( (SyncOrAsync == SYNC_SUBMIT) && (OUTIrpExpectedException != null) )
@@ -482,7 +482,7 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
      * @param expectedAcceptShortPacket expected acceptShortPacket setting
      * @param verifyAcceptShortPacket Specify whether or not to verify acceptShortPacket
      * @param expectedLength expected unchanged length for byte[]
-     * @param expectedOffset expected unchaged offset for byte[]
+     * @param expectedOffset expected unchanged offset for byte[]
      * @param expectedActualLength expected actual length of data sent or received
      * @param expectedException expectedException
      * @param expectedData expected byte[]
@@ -527,17 +527,17 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
             try
             {
                 usbControlIrp.setData(SentData);
-                fail("java.lang.IllegalArgumentException should have been thrown, but no expception was thrown." );
+                fail("java.lang.IllegalArgumentException should have been thrown, but no exception was thrown." );
             }
             catch ( java.lang.IllegalArgumentException e )
             {
-                //should have come through here	
+                //should have come through here
                 VerifyIrpMethods.printDebug("Got illegal argument exception for attempting to set a null buffer.");
                 return; //there will be nothing to verify
             }
             catch ( Exception e )
             {
-                fail("java.lang.IllegalArgumentException should have been thrown, but expception " 
+                fail("java.lang.IllegalArgumentException should have been thrown, but exception "
                      + e.getMessage() + " was thrown instead.");
             }
 
@@ -581,7 +581,7 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
                                                        expectedwIndex);
         /*
          * For syncSubmit, all exceptions should be thrown on submit and should equal expected exception.
-         * For asyncSubmit, exceptions might not be thrown on submit so they will only be checked against 
+         * For asyncSubmit, exceptions might not be thrown on submit so they will only be checked against
          * expected exception if one was actually thrown.
          */
         if ( (SyncOrAsync == SYNC_SUBMIT) && (expectedException != null) )
@@ -659,7 +659,7 @@ public class DefaultControlPipeTestErrorConditions extends TestCase
         }
         catch ( Exception uE )
         {
-            /* The exception sould indicate the reason for the failure.
+            /* The exception should indicate the reason for the failure.
              * For this example, we'll just stop trying.
              */
             if ( debug )

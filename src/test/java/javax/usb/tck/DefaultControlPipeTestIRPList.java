@@ -57,7 +57,7 @@ public class DefaultControlPipeTestIRPList extends TestCase
         if ( debug )
         {
 
-            /* 
+            /*
             *Print out some debug info
             */
             System.out.println("iterations = " + iterations);
@@ -75,7 +75,7 @@ public class DefaultControlPipeTestIRPList extends TestCase
 
     /**
      * testBuffersMultiplesOfMaxPacketSize()--send OUT data which will be saved in device and made
-     * available on next IN request.  Size of OUT data will be a multiple of maxPacketSize (64 bytes) 
+     * available on next IN request.  Size of OUT data will be a multiple of maxPacketSize (64 bytes)
      */
     public void testBuffersMultiplesOfMaxPacketSize()
     {
@@ -85,7 +85,7 @@ public class DefaultControlPipeTestIRPList extends TestCase
             for ( int j=0; j<transmitList.length; j++ )
             {
                 //set Control IRP specific data
-                //Common to all OUT and IN IRPs for this test 
+                //Common to all OUT and IN IRPs for this test
                 byte bRequest = VENDOR_REQUEST_TRANSFER_DATA; //Common to all OUT and IN IRPS for this test
                 boolean acceptShortPacket = true; //acceptShortPacket is set on an individual IRP basis; default is true
                 boolean verifyAcceptShortPacket = true; //verify ShortPacket setting in this test
@@ -187,7 +187,7 @@ public class DefaultControlPipeTestIRPList extends TestCase
 
     /**
     * testBuffersNotMultiplesOfMaxPacketSize()--send OUT data which will be saved in device and made
-    * available on next IN request.  Size of OUT data will not be a multiple of maxPacketSize (64 bytes). 
+    * available on next IN request.  Size of OUT data will not be a multiple of maxPacketSize (64 bytes).
     */
     public void testBuffersNotMultiplesOfMaxPacketSize()
     {
@@ -312,7 +312,7 @@ public class DefaultControlPipeTestIRPList extends TestCase
      * @param bmRequestTypeOUT bmRequestType used for OUT IRP (VENDOR REQUEST TO DEVICE)
      * @param OUTwIndex wIndex for OUT IRP is start index for IRP at device end (usually zero even if offset is non-zero)
      * @param OUTwLength wLength is length of OUT IRP (set by setData() or setLength() method of IRP)
-     * @param OUTOffset Offset in byte[] of first byte of data to send 
+     * @param OUTOffset Offset in byte[] of first byte of data to send
      * @param OUTLength Length of data in byte[] to send
      * @param OUTExpectedLength Length of data expected to be sent (same as OUTLength)
      * @param OUTexpectedException Exception expected on OUT submit (none in this test)
@@ -394,7 +394,7 @@ public class DefaultControlPipeTestIRPList extends TestCase
 
         }
 
-        //copy individual transmitbuffers into single OUT buffer
+        //copy individual transmit buffers into single OUT buffer
         for ( int i = 0 ; i < numIRPPairs; i++ )
         {
             TransmitBuffer currentTransmitBuffer = (TransmitBuffer) transmitBuffers.get(i);
@@ -453,7 +453,7 @@ public class DefaultControlPipeTestIRPList extends TestCase
                 }
 
             }
-        }   
+        }
 
     };
 
@@ -466,7 +466,7 @@ public class DefaultControlPipeTestIRPList extends TestCase
         {
             numDataEvents++;  //debug use only
             assertNotNull(uddE); //should never happen
-            listOfDeviceEvents.add(uddE); // add event to list of events; all events should be returned 										  
+            listOfDeviceEvents.add(uddE); // add event to list of events; all events should be returned
                                           // in same order as IRPs in list
             if ( debug )
             {
@@ -478,7 +478,7 @@ public class DefaultControlPipeTestIRPList extends TestCase
             numExceptionEvents++; //debug use only
             assertNotNull(udeE);  // should never happen
             listOfDeviceEvents.add(udeE);  // add event to list of events; all events should be returned in
-                                           // same order as IRPs in list 
+                                           // same order as IRPs in list
             fail("No devices error events expected during this test.  Exception is " + udeE.getUsbException().getMessage());
         }
         public void usbDeviceDetached(UsbDeviceEvent udE)
@@ -494,10 +494,10 @@ public class DefaultControlPipeTestIRPList extends TestCase
      * @param SyncOrAsync SYNC_SUBMIT or ASYNC_SUBMIT
      * @param numIrpPairs Number of OUT/IN IRP pairs in IRP List
      * @param usbDevice The UsbDevice.
-     * @param listOfUsbControlIrps The listOfUsbControlIrps ordered OUT/IN/OUT/IN... 
+     * @param listOfUsbControlIrps The listOfUsbControlIrps ordered OUT/IN/OUT/IN...
      * @return
      */
-    private boolean SendUsbControlIrpList(boolean SyncOrAsync, int numIrpPairs, 
+    private boolean SendUsbControlIrpList(boolean SyncOrAsync, int numIrpPairs,
                                           UsbDevice usbDevice, List listOfUsbControlIrps)
     {
         try
@@ -525,21 +525,21 @@ public class DefaultControlPipeTestIRPList extends TestCase
                     ((UsbControlIrp)listOfUsbControlIrps.get(i)).waitUntilComplete(5000);
                     assertTrue("isComplete() not true for IRP after waitUntilComplete(..)",
                                ((UsbControlIrp)listOfUsbControlIrps.get(i)).isComplete());
-                    assertFalse("isUsbException() is true for IRP after waitUntilComplete(..): " + 
+                    assertFalse("isUsbException() is true for IRP after waitUntilComplete(..): " +
                                 ((UsbControlIrp)listOfUsbControlIrps.get(i)).getUsbException(),
                                 ((UsbControlIrp)listOfUsbControlIrps.get(i)).isUsbException());
                 }
             }
         } catch ( UsbException uE )
         {
-            /* The exception sould indicate the reason for the failure.
+            /* The exception should indicate the reason for the failure.
              * For this example, we'll just stop trying.
              */
             fail("No exceptions were expected in this test.  DCP submission failed." + uE.getMessage());
             return false;
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            fail ("A connected device should't throw the UsbDisconnectedException!");         // @P1A
+            fail ("A connected device shouldn't throw the UsbDisconnectedException!");         // @P1A
         }                                                                                     // @P1A
 //		finally
 //		{
@@ -619,4 +619,3 @@ public class DefaultControlPipeTestIRPList extends TestCase
         (byte)'e',(byte) 0x00,
         (byte)'r',(byte) 0x00};
 }
-

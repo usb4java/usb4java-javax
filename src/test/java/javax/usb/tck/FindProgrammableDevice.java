@@ -73,7 +73,7 @@ public class FindProgrammableDevice extends Object
     //
 
     /**
-     * find the first Programmable board with default vendorID = 0x0547 and 
+     * find the first Programmable board with default vendorID = 0x0547 and
      * default productID = 0x1002
      * return null if not found
      */
@@ -85,7 +85,7 @@ public class FindProgrammableDevice extends Object
     }
 
     /**
-         * find the first Programmable board with default vendorID = 0x0547 and 
+         * find the first Programmable board with default vendorID = 0x0547 and
          * default productID = 0xFF01
          * This device is used for topology test.
          * return null if not found
@@ -160,7 +160,7 @@ public class FindProgrammableDevice extends Object
         }
         else
         {
-            // return the first item 
+            // return the first item
             return(UsbDevice)usbDevices.get(0);
         }
     }
@@ -198,7 +198,7 @@ public class FindProgrammableDevice extends Object
             return null;
         }
 
-        // return the list 
+        // return the list
         return usbDevices;
     }
 
@@ -301,7 +301,7 @@ public class FindProgrammableDevice extends Object
 
         /* A device's descriptor is always available.  All descriptor
          * field names and types match exactly what is in the USB specification.
-         * Note that Java does not have unsigned numbers, so if you are 
+         * Note that Java does not have unsigned numbers, so if you are
          * comparing 'magic' numbers to the fields, you need to handle it correctly.
          * For example if you were checking for Intel (vendor id 0x8086) devices,
          *   if (0x8086 == descriptor.idVendor())
@@ -385,7 +385,7 @@ public class FindProgrammableDevice extends Object
         }
         catch ( UsbDisconnectedException uDE )                                                // @P1A
         {                                                                                     // @P1A
-            System.out.println ("A connected device should't throw the UsbDisconnectedException!");// @P1A
+            System.out.println ("A connected device shouldn't throw the UsbDisconnectedException!");// @P1A
         }                                                                                     // @P1A
 
 

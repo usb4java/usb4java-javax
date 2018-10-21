@@ -117,7 +117,7 @@ public class FindControlIODevice extends Object
     }
 
     /**
-     * Finds a list of devices with a Control Pipe other than the default Cotrol
+     * Finds a list of devices with a Control Pipe other than the default Control
      * Pipe and returns it.  Returns null if no devices are found.
      * @return UsbDevice
      */

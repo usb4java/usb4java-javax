@@ -462,7 +462,7 @@ public class DefaultControlPipeTestIRP extends TestCase
                     fail("Configuration is not active!");
                 } catch ( UsbDisconnectedException uDE )                                      // @P1C
                 {                                                                             // @P1A
-                    fail ("A connected device should't throw the UsbDisconnectedException!"); // @P1A
+                    fail ("A connected device shouldn't throw the UsbDisconnectedException!"); // @P1A
                 } catch ( UsbException ue )                                                   // @P1C
                 {
                     fail("Interface was not claimed!");
@@ -516,7 +516,7 @@ public class DefaultControlPipeTestIRP extends TestCase
                     fail("Interface was not released!");
                 } catch ( UsbDisconnectedException uDE )                                      // @P1C
                 {                                                                             // @P1A
-                    fail ("A connected device should't throw the UsbDisconnectedException!"); // @P1A
+                    fail ("A connected device shouldn't throw the UsbDisconnectedException!"); // @P1A
                 }                                                                             // @P1A
             }
 
@@ -705,7 +705,7 @@ public class DefaultControlPipeTestIRP extends TestCase
      * @param expectedAcceptShortPacket expected acceptShortPacket setting
      * @param verifyAcceptShortPacket Specify whether or not to verify acceptShortPacket
      * @param expectedLength expected unchanged length for byte[]
-     * @param expectedOffset expected unchaged offset for byte[]
+     * @param expectedOffset expected unchanged offset for byte[]
      * @param expectedActualLength expected actual length of data sent or received
      * @param expectedException expectedException
      * @param expectedData expected byte[]
@@ -840,7 +840,7 @@ public class DefaultControlPipeTestIRP extends TestCase
             return true;
         } catch ( UsbException uE )
         {
-            /* The exception sould indicate the reason for the failure.
+            /* The exception should indicate the reason for the failure.
              * For this example, we'll just stop trying.
              */
             fail("DCP submission failed." + uE.getMessage());
@@ -848,7 +848,7 @@ public class DefaultControlPipeTestIRP extends TestCase
             return false;
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            fail ("A connected device should't throw the UsbDisconnectedException!");         // @P1A
+            fail ("A connected device shouldn't throw the UsbDisconnectedException!");         // @P1A
 	    return false;                                                                     // @P1A
         }                                                                                     // @P1A
     };

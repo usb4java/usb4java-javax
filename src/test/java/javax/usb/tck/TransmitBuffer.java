@@ -1,5 +1,5 @@
 package javax.usb.tck;
- 
+
 /*
  * Copyright (c) IBM Corporation, 2004
  * All Rights Reserved.
@@ -9,10 +9,10 @@ package javax.usb.tck;
  * http://oss.software.ibm.com/developerworks/opensource/license-cpl.html
  *
  */
- 
- 
+
+
 /**
- * This is the TransmitBuffer class to create a OUT transmitt buffer based on
+ * This is the TransmitBuffer class to create a OUT transmit buffer based on
  * parameters supply to the constructor.
  * It will create an expected buffer to be received on an IN buffer also
  * based on the parameters supplied to the constructor.
@@ -22,10 +22,10 @@ package javax.usb.tck;
 @SuppressWarnings("all")
 public class TransmitBuffer extends Object
 {
- 
+
     /**
      * Constructor.
-     * @param ucTransformType The Data manipilation:
+     * @param ucTransformType The Data manipulation:
      *        1 - Pass through
      *        2 - Invert every bit starting with the second bit
      *        3 - Invert every other bit (invert odd bits assuming bit numbering begins at 0)
@@ -100,13 +100,13 @@ public class TransmitBuffer extends Object
             throw new IllegalArgumentException("Length exceed limit");
         }
         mySequenceNumber =  sequenceNumber;
-        sequenceNumber++;    // next Transmitt buffer sequence
+        sequenceNumber++;    // next Transmit buffer sequence
     }
- 
+
     //-------------------------------------------------------------------------
     // Public methods
     //
- 
+
     /** compare the IN buffer expected to an IN buffer actually received
      * @param in The Buffer to be compared with IN buffer
      * @return true if the two buffers are the same, false otherwise.
@@ -128,7 +128,7 @@ public class TransmitBuffer extends Object
         }
         return true;
     }
- 
+
     /** compare the OUT buffer to a buffer supplied as a parameter
      * @param outData The buffer to compare with the OUT buffer
      * @return true if the two buffers are the same, false otherwise
@@ -145,9 +145,9 @@ public class TransmitBuffer extends Object
             }
         }
         return true;
- 
+
     }
- 
+
     /** compare two byte arrays supplied as a parameter.  Length of byte arrays is expected to be equal.
      * @param buffer1 First byte array.
      * @param buffer2 Second byte array.
@@ -165,9 +165,9 @@ public class TransmitBuffer extends Object
             }
         }
         return true;
- 
+
     }
- 
+
     /** Compares first "length" number of bytes of two arrays.
      * The caller must ensure that the length does not exceed the
      * length of either buffer1 or buffer2.
@@ -178,7 +178,7 @@ public class TransmitBuffer extends Object
      */
     protected static boolean compareTwoByteArraysForSpecifiedLength(byte[] buffer1, int offset1, byte[] buffer2, int offset2,int length)
     {
- 
+
         for ( int i = 0; i < length; i++ )
         {
             if ( buffer1[i + offset1] != buffer2[i + offset2] )
@@ -187,11 +187,11 @@ public class TransmitBuffer extends Object
             }
         }
         return true;
- 
+
     }
- 
- 
- 
+
+
+
     /**
      * Get the IN buffer.
      * @return The IN data buffer.
@@ -200,7 +200,7 @@ public class TransmitBuffer extends Object
     {
         return inBuffer;
     }
- 
+
     /**
      * Get the OUT buffer.
      * @return The OUT data buffer.
@@ -209,7 +209,7 @@ public class TransmitBuffer extends Object
     {
         return outBuffer;
     }
- 
+
     /**
      * Get the sequenceNumber.
      * @return The sequenceNumber variable.
@@ -218,10 +218,10 @@ public class TransmitBuffer extends Object
     {
         return mySequenceNumber;
     }
- 
- 
- 
- 
+
+
+
+
     //-------------------------------------------------------------------------
     // Instance variables
     //
@@ -235,6 +235,6 @@ public class TransmitBuffer extends Object
     private static final byte transformType_invert_every_bit        = 2;
     private static final byte transformType_invert_every_other_bit  = 3;
     private static final byte transformType_drop_every_third_byte   = 4;
- 
- 
+
+
 }

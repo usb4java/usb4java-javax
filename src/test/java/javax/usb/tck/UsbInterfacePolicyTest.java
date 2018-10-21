@@ -52,7 +52,7 @@ public class UsbInterfacePolicyTest extends TestCase
     protected void setUp() throws Exception {
         usbDevice = programmableDevice.getProgrammableDevice();
         assertTrue( "Find Programmable board Failed! Got a null instance", usbDevice != null );
-        assertTrue("The usbDevice is not confuigured", usbDevice.isConfigured());
+        assertTrue("The usbDevice is not configured", usbDevice.isConfigured());
         usbConfiguration = usbDevice.getUsbConfiguration((byte)1);
         policy1 = new InterfacePolicyImp();
     }
@@ -72,7 +72,7 @@ public class UsbInterfacePolicyTest extends TestCase
      * the UsbInterfacePolicyImp class
      *<p>
      * <strong>NOTE:</strong> This will not check if the claim isn't forced
-     * because some implemetations
+     * because some implementations
      * will not be able to do a force claim and some will,
      *
      */
@@ -105,7 +105,7 @@ public class UsbInterfacePolicyTest extends TestCase
      * the UsbInterfacePolicyImp class
      *<p>
      * <strong>NOTE:</strong> This will not check if the claim is forced
-     * because some implemetations
+     * because some implementations
      * will not be able to do a force claim and some will.
      *
      */
@@ -150,7 +150,7 @@ public class UsbInterfacePolicyTest extends TestCase
             fail("UsbException: " + ue);
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            fail ("A connected device should't throw the UsbDisconnectedException!");         // @P1A
+            fail ("A connected device shouldn't throw the UsbDisconnectedException!");         // @P1A
         }                                                                                     // @P1A
         return true;
     }
@@ -175,7 +175,7 @@ public class UsbInterfacePolicyTest extends TestCase
             fail("UsbException: " + ue);
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            fail ("A connected device should't throw the UsbDisconnectedException!");         // @P1A
+            fail ("A connected device shouldn't throw the UsbDisconnectedException!");         // @P1A
         }                                                                                     // @P1A
         return released;
     }
@@ -206,7 +206,7 @@ public class UsbInterfacePolicyTest extends TestCase
             fail("UsbException: " + ue);
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            fail ("A connected device should't throw the UsbDisconnectedException!");         // @P1A
+            fail ("A connected device shouldn't throw the UsbDisconnectedException!");         // @P1A
         }                                                                                     // @P1A
 
         return opened;
@@ -226,7 +226,7 @@ public class UsbInterfacePolicyTest extends TestCase
             fail("UsbNotOpenedException: " + unae);
         } catch ( UsbDisconnectedException uDE )                                              // @P1C
         {                                                                                     // @P1A
-            fail ("A connected device should't throw the UsbDisconnectedException!");         // @P1A
+            fail ("A connected device shouldn't throw the UsbDisconnectedException!");         // @P1A
         }                                                                                     // @P1A
         return true;
     }
@@ -246,7 +246,7 @@ public class UsbInterfacePolicyTest extends TestCase
 
     /*
      *************************************************************************
-     ********************Test Interface Policy Implemetation class************
+     ********************Test Interface Policy Implementation class************
      *************************************************************************/
     /**
      * Copyright (c) 2004, International Business Machines Corporation.
@@ -269,7 +269,7 @@ public class UsbInterfacePolicyTest extends TestCase
     private class InterfacePolicyImp implements UsbInterfacePolicy
     {
 
-        /**Constuctor
+        /**Constructor
          *
          * <p>
          * Default constructor, sets everything in this policy to true,

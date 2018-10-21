@@ -15,18 +15,18 @@
  * 0000 nnnnnnn           yymmdd          Initial Development
  * $P1           tck.rel1 040804 raulortz Support for UsbDisconnectedException
  */
- 
+
 package javax.usb.tck;
- 
+
 import java.util.*;
- 
+
 import javax.usb.*;
 import javax.usb.event.*;
 import javax.usb.util.*;
- 
- 
+
+
 import junit.framework.Assert;
- 
+
 /**
  * IOTests -- Helper methods for Bulk, Interrupt, and Isochronous IO Tests
  * <p>
@@ -37,27 +37,27 @@ import junit.framework.Assert;
  *
  * @author Leslie Blair
  */
- 
+
 
 @SuppressWarnings("all")
 public class IOTests
 {
- 
- 
- 
- 
+
+
+
+
     protected void RoundTripIOTest(byte testType,  int numIrps, int endpointmaxPacketSize,
                                    boolean []acceptShortPacket, boolean []verifyAcceptShortPacket,
                                    int[] OUTLength, int[] OUTOffset, int[] OUTExpectedLength,
                                    Exception []OUTexpectedException,
- 
+
                                    int[] INLength, int[]INOffset, int[]INExpectedLength,
                                    Exception []INexpectedException,
                                    byte [] transformType
                                   )
- 
+
     {
- 
+
         //ensure all values set up
         Assert.assertEquals(numIrps,transformType.length);
         Assert.assertEquals(numIrps,OUTLength.length);
@@ -70,35 +70,35 @@ public class IOTests
         Assert.assertEquals(numIrps,INOffset.length);
         Assert.assertEquals(numIrps,INExpectedLength.length);
         Assert.assertEquals(numIrps,INexpectedException.length);
- 
+
         Assert.assertNotNull("usbDevice is null, but should not be null.", usbDevice);
- 
- 
+
+
         /*
          * set up Pipes and add listeners
          */
         UsbPipe inPipe = null;
         UsbPipe outPipe = null;
- 
+
         //we need two int values back from method call so we'll put them in the array
         int [] pipeListIndexes = new int[2];
         int inPipeArrayIndex = 0;
         int outPipeArrayIndex = 1;
- 
+
         IOMethods.findINandOUTPipesForTest(usbPipeListGlobal, endpointmaxPacketSize, pipeListIndexes, inPipeArrayIndex, outPipeArrayIndex);
         inPipe = (UsbPipe) usbPipeListGlobal.get(pipeListIndexes[inPipeArrayIndex]);
         outPipe = (UsbPipe) usbPipeListGlobal.get(pipeListIndexes[outPipeArrayIndex]);
         IOMethods.verifyThePipes(inPipe, outPipe, endpointmaxPacketSize);
- 
+
         inPipe.addUsbPipeListener(inPipeListener);
         outPipe.addUsbPipeListener(outPipeListener);
- 
+
         IOMethods.openPipe(inPipe);
         IOMethods.openPipe(outPipe);
- 
+
         if ( (inPipe instanceof UsbUtil.SynchronizedUsbPipe) && (outPipe instanceof UsbUtil.SynchronizedUsbPipe) )
             printDebug("SynchronizedUsbPipes under test.");
- 
+
         /*
          * set up the IRPs or byte arrays and send and verify the data
          */
@@ -106,15 +106,15 @@ public class IOTests
         {
             for ( int syncOrAsync=0; syncOrAsync<transmitList.length; syncOrAsync++ ) //SYNC first and then ASYNC
             {
- 
+
                 //define buffers to be used in IRPs or sent as byte[]
                 byte[] aggregateOUTbuffer = null;
                 byte[] aggregateINbuffer = null;
- 
+
                 if ( testType == IRPLIST )
                 {
                     printDebug("RoundTripTest -- IRPList " + transmitListStrings[syncOrAsync] +" " + endpointTypeStrings[endpointType]);
- 
+
                     /*
                      * For list of IRPs a single byte array will be used for the list of IN IRPs and another
                      * single byte array will be used for all of the OUT IRPs.
@@ -138,34 +138,34 @@ public class IOTests
                         printDebug("RoundTripTest -- IRP " + transmitListStrings[syncOrAsync] +" " +  endpointTypeStrings[endpointType]);
                     }
                     Assert.assertEquals("Number of IRPs should be 1 for byte [] and single IRP.", 1, numIrps);
- 
+
                 }
- 
- 
+
+
                 /*
-                 * Create the OUT and IN IRPs or byte arrrays
+                 * Create the OUT and IN IRPs or byte arrays
                  */
                 List transmitBuffers = new ArrayList();
                 List listOfOUTIrps = new ArrayList();
                 List listOfINIrps = new ArrayList();
- 
+
                 for ( int k = 0 ; k < numIrps; k++ )
                 {
                     //create transmit buffer for OUT and IN IRPs
                     TransmitBuffer currentTransmitBuffer = new TransmitBuffer(transformType[k], OUTLength[k]);
                     transmitBuffers.add(currentTransmitBuffer);
- 
- 
+
+
                     //create OUT IRP
                     UsbIrp currentOUTIrp = outPipe.createUsbIrp();
                     listOfOUTIrps.add(currentOUTIrp);
- 
+
                     //set data in OUT IRP
                     currentOUTIrp.setData(aggregateOUTbuffer, OUTOffset[k], OUTLength[k]);
- 
+
                     //OUT IRP is ready to go!
- 
- 
+
+
                     if ( endpointType == UsbConst.ENDPOINT_TYPE_ISOCHRONOUS )
                     {
                         /*
@@ -188,7 +188,7 @@ public class IOTests
                             INLength[l] = standardISOINBufferLength;
                         }
                         int standardISOINBufferOffset = 0;
- 
+
                         //int numCopies = 1;//there will be numCopies * numIrps in the list of ISO In Irps
                         int totalNumCopies = 40;//there will be numCopies * numIrps in the list of ISO In Irps
                         for ( int indexOfCurrentCopy=0; indexOfCurrentCopy < totalNumCopies; indexOfCurrentCopy++ )
@@ -197,11 +197,11 @@ public class IOTests
                             UsbIrp currentINIrp = inPipe.createUsbIrp();
                             listOfINIrps.add(currentINIrp);
                             byte[] currentINbuffer = new byte[standardISOINBufferLength];
- 
+
                             currentINIrp.setData(currentINbuffer, standardISOINBufferOffset, standardISOINBufferLength);
                         }
- 
- 
+
+
                     }
                     else
                     {
@@ -213,26 +213,26 @@ public class IOTests
                          * byte[] will be filled by IN operation.
                          */
                         currentINIrp.setData(aggregateINbuffer, INOffset[k], INLength[k]);
- 
+
                     }
- 
- 
- 
+
+
+
                 }
- 
- 
-                //copy individual transmitbuffers into single OUT  buffer
+
+
+                //copy individual transmit buffers into single OUT  buffer
                 for ( int k = 0 ; k < numIrps; k++ )
                 {
                     TransmitBuffer currentTransmitBuffer = (TransmitBuffer) transmitBuffers.get(k);
- 
+
                     System.arraycopy(currentTransmitBuffer.getOutBuffer(), 0, aggregateOUTbuffer, OUTOffset[k], OUTLength[k]);
                 }
- 
+
                 //ensure all events are clear before sending IRPs
                 inPipeEvents.clear();
                 outPipeEvents.clear();
- 
+
                 if ( !sendOUTandIN( testType, transmitList[syncOrAsync],  inPipe, outPipe,
                                     listOfINIrps, listOfOUTIrps) )
                 {
@@ -244,7 +244,7 @@ public class IOTests
                     {
                         clearOutTheINEventAndIrpListForISO(inPipeEvents, listOfINIrps);
                     }
- 
+
                     //no exceptions thrown on submit, so verify data
                     for ( int k = 0; k<numIrps; k++ )
                     {
@@ -260,8 +260,8 @@ public class IOTests
                                                                                  0, ((TransmitBuffer)transmitBuffers.get(k)).getOutBuffer().length);
                             submittedOUTIRP = null;
                         }
- 
- 
+
+
                         //verify OUT IRP after successful transmit
                         VerifyIrpMethods.verifyUsbIrpAfterEvent(submittedOUTIRP,
                                                                 (EventObject) outPipeEvents.get(k),
@@ -273,7 +273,7 @@ public class IOTests
                                                                 OUTOffset[k],
                                                                 OUTLength[k]
                                                                );
- 
+
                         //for BYTE_ARRAY and SYNC, there is no submitted IN IRP
                         //except for ISOCHRONOUS which always has an async submitted IRP list for the IN
                         UsbIrp submittedINIRP = (UsbIrp) listOfINIrps.get(k);
@@ -303,16 +303,16 @@ public class IOTests
                 } //no exceptions on submit
             } //SYNC or ASYNC
         } // iterations
- 
- 
+
+
         IOMethods.closePipe(inPipe);
         IOMethods.closePipe(outPipe);
- 
+
         inPipe.removeUsbPipeListener(inPipeListener);
         outPipe.removeUsbPipeListener(outPipeListener);
     };
- 
- 
+
+
     private boolean sendOUTandIN(byte testType, boolean SyncOrAsync,  UsbPipe inPipe, UsbPipe outPipe,
                                  List listOfINIrps, List listOfOUTIrps)
     {
@@ -402,10 +402,10 @@ public class IOTests
                     ((UsbIrp)listOfOUTIrps.get(0)).waitUntilComplete(5000);
                     printDebug("Return from async Submit OUT byte[]");
                 }
- 
+
             }
- 
- 
+
+
             //all IRPs should be complete when sync submit returns
             for ( int i=0; i< (listOfOUTIrps.size()); i++ )
             {
@@ -414,7 +414,7 @@ public class IOTests
                 Assert.assertFalse("isUsbException() is true for IRP after syncSubmit returned",
                                    ((UsbIrp)listOfOUTIrps.get(i)).isUsbException());
             }
- 
+
             //isochronous IN IRP List was already submitted (see above)
             if ( endpointType != UsbConst.ENDPOINT_TYPE_ISOCHRONOUS )
             {
@@ -484,10 +484,10 @@ public class IOTests
                         ((UsbIrp)listOfINIrps.get(0)).waitUntilComplete(5000);
                         printDebug("Return from async Submit IN byte[]");
                     }
- 
+
                 }
- 
- 
+
+
                 //all IRPs should be complete when sync submit returns
                 for ( int i=0; i< (listOfINIrps.size()); i++ )
                 {
@@ -500,18 +500,18 @@ public class IOTests
         }
         catch ( UsbDisconnectedException uDE )                                                // @P1A
         {                                                                                     // @P1A
-            Assert.fail ("A connected device should't throw the UsbDisconnectedException!");  // @P1A
+            Assert.fail ("A connected device shouldn't throw the UsbDisconnectedException!");  // @P1A
         }                                                                                     // @P1A
         catch ( UsbException uE )
         {
-            /* The exception sould indicate the reason for the failure.
+            /* The exception should indicate the reason for the failure.
              * For this example, we'll just stop trying.
              */
             System.out.println("No exceptions were expected in this test.  Submission failed." + uE.getMessage());
             Assert.fail("No exceptions were expected in this test.  Submission failed." + uE.getMessage());
             return false;
         }
- 
+
         try
         {
             /*
@@ -525,14 +525,14 @@ public class IOTests
             //first wait for all OUT events
             for ( int i = 0; i < 400; i++ )
             {
- 
+
                 if ( outPipeEvents.size() == listOfOUTIrps.size() )
                 {
                     //System.out.println("Data event took less than " + ((i+1) * 20 ) +" milliseconds");
                     break;
                 }
- 
- 
+
+
                 Thread.sleep( 5 ); //wait 5 ms before checkin for event
             }
             //now wait for all IN events
@@ -543,9 +543,9 @@ public class IOTests
                     //System.out.println("Data event took less than " + ((i+1) * 20 ) +" milliseconds");
                     break;
                 }
- 
+
                 Thread.sleep( 5 ); //wait 5 ms before checkin for event
- 
+
             }
         }
         catch ( InterruptedException e )
@@ -555,11 +555,11 @@ public class IOTests
         }
         finally
         {
- 
+
             Assert.assertEquals("Did not receive all expected IN pipe events after sleep.", listOfINIrps.size(), inPipeEvents.size());
- 
+
             Assert.assertEquals("Did not receive all expected OUT pipe event after sleep.", listOfOUTIrps.size(), outPipeEvents.size());
- 
+
         }
         return true;
     };
@@ -570,14 +570,14 @@ public class IOTests
         //Once the zero length data IRPs and events are removed, only the IRPs and events that received the
         //expected OUT data should be left in the lists
         printDebug("Total pipe events for IN ISO is " + listOfPipeEvents.size());
- 
+
         for ( int i=(listOfPipeEvents.size()-1); i>=0; i-- )
         {
             //all of the IRPs in which we are interested SHOULD have a non zero length
             //amount of data returned.
             //Once the zero length data IRP events are removed, only the IRP events that received the
             //expected OUT data should be left in the list
- 
+
             Assert.assertTrue("There should be no error events in the list.",((UsbPipeEvent) listOfPipeEvents.get(i)).getClass() == UsbPipeDataEvent.class);
             if ( ((UsbPipeDataEvent) listOfPipeEvents.get(i)).getUsbIrp().getActualLength() == 0 )
             {
@@ -595,14 +595,14 @@ public class IOTests
         }
         Assert.assertFalse("None of the Isochronous IN IRPs received any data",0 == listOfPipeEvents.size());
     };
- 
- 
- 
- 
+
+
+
+
     //-------------------------------------------------------------------------
     // Instance variables
     //
- 
+
     private UsbPipeListener inPipeListener = new UsbPipeListener()
     {
         public void dataEventOccurred(UsbPipeDataEvent updE)
@@ -610,7 +610,7 @@ public class IOTests
             Assert.assertNotNull(updE);
             inPipeEvents.add(updE);
         }
- 
+
         public void errorEventOccurred(UsbPipeErrorEvent upeE)
         {
             Assert.assertNotNull(upeE);
@@ -618,7 +618,7 @@ public class IOTests
             Assert.fail("No IN pipe error events expected during this test.  Exception is " + upeE.getUsbException().getMessage());
         }
     };
- 
+
     private UsbPipeListener outPipeListener = new UsbPipeListener()
     {
         public void dataEventOccurred(UsbPipeDataEvent updE)
@@ -626,7 +626,7 @@ public class IOTests
             Assert.assertNotNull(updE);
             outPipeEvents.add(updE);
         }
- 
+
         public void errorEventOccurred(UsbPipeErrorEvent upeE)
         {
             Assert.assertNotNull(upeE);
@@ -634,7 +634,7 @@ public class IOTests
             Assert.fail("No OUT pipe error events expected during this test.  Exception is " + upeE.getUsbException().getMessage());
         }
     };
- 
+
     /**
      * Constructor
      */
@@ -642,7 +642,7 @@ public class IOTests
     {
         super();
     };
- 
+
     protected IOTests(UsbDevice newUsbDevice, List newUsbPipeList, byte newEndpointType, byte newTestType)
     {
         usbPipeListGlobal = newUsbPipeList;
@@ -650,20 +650,20 @@ public class IOTests
         endpointType = newEndpointType;
         testType = newTestType;
     };
- 
+
     private List inPipeEvents = new ArrayList();
     private List outPipeEvents = new ArrayList();
- 
+
     private List usbPipeListGlobal = new ArrayList();
- 
+
     private byte endpointType;
     private static final int MAX_SIZE_IRP_BUFFER = 750;
- 
- 
+
+
     protected static final byte TRANSFORM_TYPE_PASSTHROUGH = (byte)0x01;
     protected static final byte TRANSFORM_TYPE_INVERT_BITS = (byte)0x02;
     protected static final byte TRANSFORM_TYPE_INVERT_ALTERNATE_BITS = (byte)0x03;
- 
+
     private UsbDevice usbDevice;
     private int totalIterations = 10;
     //private int totalIterations = 1;
@@ -676,7 +676,7 @@ public class IOTests
     protected static final byte IRPLIST = 2;
     private static final String [] endpointTypeStrings = {"CONTROL","ISOCHRONOUS", "BULK", "INTERRUPT"};
     byte testType;
- 
+
     protected static void printDebug(String infoString)
     {
         if ( printDebug )

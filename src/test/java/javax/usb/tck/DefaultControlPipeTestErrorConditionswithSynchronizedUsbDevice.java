@@ -23,7 +23,7 @@ import junit.framework.TestCase;
  * Default Control Pipe Test -- Error Conditions
  * using UsbUtilSynchronizedUsbDevice
  * <p>
- * This test is the same as the DefaultControlPipeTestErrorConditions except a 
+ * This test is the same as the DefaultControlPipeTestErrorConditions except a
  * UsbUtil.SynchronizedUsbDevice is used in place of a UsbDevice.
  * <p>
  * This test verifies that control transfers operations work successfully
@@ -53,10 +53,10 @@ public class DefaultControlPipeTestErrorConditionswithSynchronizedUsbDevice exte
 
     public void testUsbShortPacketException()
     {
-        DCPIRPTestErrorConditions.testUsbShortPacketException();       
+        DCPIRPTestErrorConditions.testUsbShortPacketException();
     };
 
-    // TODO No idea how to detect a STALL condition in libusb 0.1    
+    // TODO No idea how to detect a STALL condition in libusb 0.1
     public void disabled_testUsbStallException()
     {
         DCPIRPTestErrorConditions.disabled_testUsbStallException();

@@ -14,7 +14,7 @@ import org.junit.Test;
 
 /**
  * Tests the {@link SimpleUsbEndpointDescriptor}.
- * 
+ *
  * @author Klaus Reimer (k@ailis.de)
  */
 public class SimpleUsbEndpointDescriptorTest
@@ -76,7 +76,7 @@ public class SimpleUsbEndpointDescriptorTest
      * Tests the {@link SimpleUsbEndpointDescriptor#bEndpointAddress()} method.
      */
     @Test
-    public void testEndpontAddress()
+    public void testEndpointAddress()
     {
         assertEquals(ENDPOINT_ADDRESS, descriptor.bEndpointAddress());
     }
