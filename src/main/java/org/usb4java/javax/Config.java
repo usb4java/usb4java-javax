@@ -16,10 +16,10 @@ final class Config
 {
     /** Base key name for properties. */
     private static final String KEY_BASE = "org.usb4java.javax.";
-    
+
     /** The default USB communication timeout in milliseconds. */
     private static final int DEFAULT_TIMEOUT = 5000;
-    
+
     /** The default scan interval in milliseconds. */
     private static final int DEFAULT_SCAN_INTERVAL = 500;
 
@@ -29,11 +29,17 @@ final class Config
     /** Key name for USB communication timeout. */
     private static final String SCAN_INTERVAL_KEY = KEY_BASE + "scanInterval";
 
+    /** Key name for the USBDK usage flag. */
+    private static final String USE_USBDK_KEY = KEY_BASE + "useUSBDK";
+
     /** The timeout for USB communication in milliseconds. */
     private int timeout = DEFAULT_TIMEOUT;
-    
+
     /** The scan interval in milliseconds. */
     private int scanInterval = DEFAULT_SCAN_INTERVAL;
+
+    /** If USBDK is to be used on Windows. */
+    private boolean useUSBDK = false;
 
     /**
      * Constructs new configuration from the specified properties.
@@ -55,6 +61,12 @@ final class Config
             this.scanInterval = Integer.valueOf(properties.getProperty(
                 SCAN_INTERVAL_KEY));
         }
+
+        // Read the USBDK usage flag
+        if (properties.containsKey(USE_USBDK_KEY))
+        {
+            this.useUSBDK = Boolean.valueOf(properties.getProperty(USE_USBDK_KEY));
+        }
     }
 
     /**
@@ -75,5 +87,15 @@ final class Config
     public int getScanInterval()
     {
         return this.scanInterval;
+    }
+
+    /**
+     * Check if USBDK is to be used on Windows.
+     *
+     * @return True if USBDK is to be used, false if not.
+     */
+    public boolean isUseUSBDK()
+    {
+        return this.useUSBDK;
     }
 }

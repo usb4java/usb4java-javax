@@ -24,7 +24,7 @@ import org.usb4java.javax.descriptors.SimpleUsbDeviceDescriptor;
 
 /**
  * Manages the USB devices.
- * 
+ *
  * @author Klaus Reimer (k@ailis.de)
  */
 final class DeviceManager
@@ -47,20 +47,19 @@ final class DeviceManager
 
     /**
      * Constructs a new device manager.
-     * 
+     *
      * @param rootHub
      *            The root hub. Must not be null.
-     * @param scanInterval
-     *            The scan interval in milliseconds.
+     * @param config
+     *            The configuration.
      * @throws UsbException
      *             When USB initialization fails.
      */
-    DeviceManager(final RootHub rootHub, final int scanInterval)
-        throws UsbException
+    DeviceManager(final RootHub rootHub, final Config config) throws UsbException
     {
         if (rootHub == null)
             throw new IllegalArgumentException("rootHub must be set");
-        this.scanInterval = scanInterval;
+        this.scanInterval = config.getScanInterval();
         this.rootHub = rootHub;
         this.context = new Context();
         final int result = LibUsb.init(this.context);
@@ -68,6 +67,14 @@ final class DeviceManager
         {
             throw ExceptionUtils.createPlatformException(
                 "Unable to initialize libusb", result);
+        }
+        if (config.isUseUSBDK())
+        {
+            final int usbdkResult = LibUsb.setOption(this.context, LibUsb.OPTION_USE_USBDK);
+            if (usbdkResult != LibUsb.SUCCESS && usbdkResult != LibUsb.ERROR_NOT_SUPPORTED)
+            {
+                throw ExceptionUtils.createPlatformException("Unable to set USE_USBDK option", usbdkResult);
+            }
         }
     }
 
@@ -79,10 +86,10 @@ final class DeviceManager
     {
         LibUsb.exit(this.context);
     }
-    
+
     /**
      * Creates a device ID from the specified device.
-     * 
+     *
      * @param device
      *            The libusb device. Must not be null.
      * @return The device id.
@@ -111,7 +118,7 @@ final class DeviceManager
 
     /**
      * Scans the specified ports for removed devices.
-     * 
+     *
      * @param ports
      *            The ports to scan for removals.
      */
@@ -130,7 +137,7 @@ final class DeviceManager
 
     /**
      * Scans the specified ports for new devices.
-     * 
+     *
      * @param ports
      *            The ports to scan for new devices.
      * @param hubId
@@ -165,7 +172,7 @@ final class DeviceManager
 
     /**
      * Scans the specified hub for changes.
-     * 
+     *
      * @param hub
      *            The hub to scan.
      */
@@ -197,7 +204,7 @@ final class DeviceManager
     /**
      * Updates the device list by adding newly connected devices to it and by
      * removing no longer connected devices.
-     * 
+     *
      * @throws UsbPlatformException
      *             When libusb reported an error which we can't ignore during
      *             scan.
@@ -211,7 +218,7 @@ final class DeviceManager
         final int result = LibUsb.getDeviceList(this.context, devices);
         if (result < 0)
         {
-            throw ExceptionUtils.createPlatformException(            
+            throw ExceptionUtils.createPlatformException(
                 "Unable to get USB device list", result);
         }
 
@@ -228,7 +235,7 @@ final class DeviceManager
                     if (device == null)
                     {
                         final Device parent = LibUsb.getParent(libUsbDevice);
-                        final DeviceId parentId = parent == null ? null : 
+                        final DeviceId parentId = parent == null ? null :
                             createId(parent);
                         final int speed = LibUsb.getDeviceSpeed(libUsbDevice);
                         final boolean isHub = id.getDeviceDescriptor()
@@ -278,7 +285,7 @@ final class DeviceManager
     /**
      * Returns the libusb device for the specified id. The device must be freed
      * after use.
-     * 
+     *
      * @param id
      *            The id of the device to return. Must not be null.
      * @return device The libusb device. Never null.
@@ -327,7 +334,7 @@ final class DeviceManager
 
     /**
      * Releases the specified device.
-     * 
+     *
      * @param device
      *            The device to release. Must not be null.
      */
@@ -346,7 +353,7 @@ final class DeviceManager
         // Do not start the scan thread when interval is set to 0
         final int scanInterval = this.scanInterval;
         if (scanInterval == 0) return;
-        
+
         final Thread thread = new Thread(new Runnable()
         {
             @Override

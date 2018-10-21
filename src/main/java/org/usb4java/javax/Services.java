@@ -18,7 +18,7 @@ import org.usb4java.LoaderException;
 
 /**
  * usb4java implementation of JSR-80 UsbServices.
- * 
+ *
  * @author Klaus Reimer (k@ailis.de)
  */
 public final class Services implements UsbServices
@@ -42,12 +42,12 @@ public final class Services implements UsbServices
     /** The USB device scanner. */
     private final DeviceManager deviceManager;
 
-    /** If devices should be scanned by hierarchy. */
+    /** The configuration. */
     private final Config config;
 
     /**
      * Constructor.
-     * 
+     *
      * @throws UsbException
      *             When properties could not be loaded.
      * @throws LoaderException
@@ -58,8 +58,7 @@ public final class Services implements UsbServices
         this.config = new Config(UsbHostManager.getProperties());
         Loader.load();
         this.rootHub = new RootHub();
-        this.deviceManager = new DeviceManager(this.rootHub, 
-            this.config.getScanInterval());
+        this.deviceManager = new DeviceManager(this.rootHub, this.config);
         this.deviceManager.start();
     }
 
@@ -102,7 +101,7 @@ public final class Services implements UsbServices
 
     /**
      * Informs listeners about a new attached device.
-     * 
+     *
      * @param device
      *            The new attached device.
      */
@@ -113,7 +112,7 @@ public final class Services implements UsbServices
 
     /**
      * Informs listeners about a detached device.
-     * 
+     *
      * @param device
      *            The detached device.
      */
@@ -124,7 +123,7 @@ public final class Services implements UsbServices
 
     /**
      * Returns the configuration.
-     * 
+     *
      * @return The configuration.
      */
     Config getConfig()
@@ -134,7 +133,7 @@ public final class Services implements UsbServices
 
     /**
      * Returns the usb4java services.
-     * 
+     *
      * @return The usb4java services.
      */
     static Services getInstance()
@@ -154,7 +153,7 @@ public final class Services implements UsbServices
                 + e, e);
         }
     }
-    
+
     /**
      * Manually scans for USB device connection changes.
      */
