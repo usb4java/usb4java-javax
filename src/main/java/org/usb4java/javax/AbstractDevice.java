@@ -507,7 +507,8 @@ abstract class AbstractDevice implements UsbDevice
         final short[] languages = getLanguages();
         final DeviceHandle handle = open();
         final short langId = languages.length == 0 ? 0 : languages[0];
-        final ByteBuffer data = ByteBuffer.allocateDirect(256);
+        final byte maxBufferSize = getUsbDeviceDescriptor().bMaxPacketSize0();
+        final ByteBuffer data = ByteBuffer.allocateDirect(maxBufferSize);
         final int result =
             LibUsb.getStringDescriptor(handle, index, langId, data);
         if (result < 0)
@@ -536,7 +537,8 @@ abstract class AbstractDevice implements UsbDevice
     private short[] getLanguages() throws UsbException
     {
         final DeviceHandle handle = open();
-        final ByteBuffer buffer = ByteBuffer.allocateDirect(256);
+        final byte maxBufferSize = getUsbDeviceDescriptor().bMaxPacketSize0();
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(maxBufferSize);
         final int result = LibUsb.getDescriptor(handle, LibUsb.DT_STRING,
             (byte) 0, buffer);
         if (result < 0)
